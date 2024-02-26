@@ -1,11 +1,9 @@
 import Container from 'react-bootstrap/Container';
+import { RouterProvider } from 'react-router';
+import router from './config/router';
 
 function App() {
-  return (
-    <Container>
-      <h1>Hello world</h1>
-    </Container>
-  )
+  return <RouterProvider router={router} />;
 }
 
 export default App
