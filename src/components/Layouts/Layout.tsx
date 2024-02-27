@@ -1,8 +1,7 @@
 import { Outlet } from "react-router-dom";
-import React from 'react'
 import Container from "react-bootstrap/esm/Container";
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
+import Header from "@/components/Header/Header";
+import Footer from "@/components/Footer/Footer";
 
 const Layout = () => {
   return (
