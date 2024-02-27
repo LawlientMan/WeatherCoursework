@@ -2,9 +2,13 @@ import siteLogo from '@/assets/goose_logo.png';
 import { Navbar } from 'react-bootstrap'
 import { Link } from "react-router-dom";
 
-const HeaderLogo = () => {
+interface HeaderLogoProps {
+    onLogoClick: () => void;
+}
+
+const HeaderLogo = ({onLogoClick}: HeaderLogoProps) => {
     return (
-        <Navbar.Brand as={Link} to="/" className='me-0'>
+        <Navbar.Brand as={Link} to="/" className='me-0' onClick={onLogoClick}>
             <img
                 alt="logo"
                 src={siteLogo}
