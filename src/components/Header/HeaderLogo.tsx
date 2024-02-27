@@ -1,4 +1,4 @@
-import siteLogo from '@/assets/goose_logo.png';
+import siteLogo from '@/assets/logo.png';
 import { Navbar } from 'react-bootstrap'
 import { Link } from "react-router-dom";
 
