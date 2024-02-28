@@ -16,7 +16,7 @@ const HeaderLogo = ({onLogoClick}: HeaderLogoProps) => {
                 height="30"
                 className="d-inline-block align-top"
             />{' '}
-            Weather Forecast
+            Weather
         </Navbar.Brand>
     )
 }

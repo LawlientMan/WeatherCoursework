@@ -3,6 +3,8 @@ import router from '@/config/router';
 import { HelmetProvider } from 'react-helmet-async';
 import { RouterProvider } from 'react-router';
 
+import "./index.css";
+
 function App() {
   return (
     <HelmetProvider>
