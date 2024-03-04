@@ -1,3 +1,4 @@
+import WeatherPage from "@/pages/WeatherPage";
 import Layout from "@components/Layouts/Layout";
 import AboutPage from "@pages/AboutPage";
 import HomePage from "@pages/HomePage";
@@ -11,6 +12,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "/about", element: <AboutPage /> },
+      { path: "/weather", element: <WeatherPage /> },
       // { path: "*", element: <NotFoundPage /> },
     ],
   },
