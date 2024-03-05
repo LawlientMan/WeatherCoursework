@@ -7,26 +7,31 @@ import jsonData from "@/components/LocationSearch/TempLocationsResult.json";
 import "@/components/LocationSearch/LocationSearch.css";
 import LocationSearchInput from '@/components/LocationSearch/LocationSearchInput';
 import LocationOptions from '@/components/LocationSearch/LocationOptions';
+import { useOutsideClick } from '@/hooks/useOutsideClick';
 
 interface LocationSearchProps {
     onLocationSelected: (location: Location) => void;
 }
 
 const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
+    // const { data, error, isLoading } = useGetLocationsQuery(runSearchText, { skip: !shouldRunSearch })
+
     const [activeOption, setActiveOption] = useState(-1);
-    const [showOptions, setShowOptions] = useState(true);
+    const [open, setOpen] = useState(false);
 
     const [searchText, setSearchText] = useState('');
     const [runSearchText, setRunSearchText] = useState('');
 
-    const shouldRunSearch = runSearchText !== '';
-
-
-    // const { data, error, isLoading } = useGetLocationsQuery(runSearchText, { skip: !shouldRunSearch })
-
     const data: Location[] = jsonData;
-    const error: string = '';
+    const error: string = '12121';
     const [isLoading, setIsLoading] = useState(false);
+
+    const handleClickOutside = () => {
+        setOpen(false);
+    };
+
+    const ref = useOutsideClick(handleClickOutside);
+
 
     const getData = searchText === runSearchText ? data : null;
 
@@ -35,12 +40,12 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
 
         if (activeOption < 0) {
             setRunSearchText(searchText);
-            setShowOptions(true);
+            // setShowOptions(true);
             setActiveOption(-1);
             console.log('run search');
         }
         else {
-            setShowOptions(false);
+            // setShowOptions(false);
             onLocationSelected(data[activeOption]);
             setActiveOption(-1);
             if (document.activeElement instanceof HTMLElement) {
@@ -69,39 +74,28 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
         }
     };
 
-    const handleInput = (value: string) => {
-        setSearchText(value);
-        setShowOptions(false);
-    }
-
-    const handleFocusEvent = (e: FocusEvent<HTMLInputElement>) => {
-        if (data && data.length > 0) {
-            setShowOptions(true);
-        }
-    }
-
-    const handleOnBlurEvent = (e: FocusEvent<HTMLInputElement>) => {
-        console.log('OnBlur');
-        setShowOptions(false);
-    }
-
     return (
         <>
-            <Form onSubmit={handleSubmit} className="location-search">
+            <Form ref={ref}
+                onSubmit={handleSubmit}
+                className="location-search">
                 <LocationSearchInput
+                    onClick={() => setOpen(true)}
                     isLoading={isLoading}
                     placeholder="Let's find a city"
                     value={searchText}
-                    onChange={(e) => handleInput(e.target.value)}
+                    onChange={(e) => setSearchText(e.target.value)}
                     onKeyDown={onKeyDown}
-                    onFocus={handleFocusEvent}
-                    onBlur={handleOnBlurEvent}
                 />
 
-                {!isLoading && showOptions &&
+                {!isLoading && open &&
                     <div className='menu'>
                         {error
-                            ? <>error</>
+                            ? <ListGroup>
+                                <ListGroup.Item variant='danger'>
+                                    Something went wrong.
+                                </ListGroup.Item>
+                            </ListGroup>
                             : <LocationOptions locations={getData} activeOption={activeOption} />
                         }
                     </div>
