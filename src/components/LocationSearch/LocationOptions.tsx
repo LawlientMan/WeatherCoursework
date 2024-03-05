@@ -9,29 +9,25 @@ interface InputProps {
 
 const LocationOptions = ({ locations, activeOption }: InputProps) => {
     return (
-        <div>
+        <>
             {locations && locations.length > 0
-                ? <div>
-                    <ListGroup>
-                        {locations.map((location, index) => {
-                            return (<ListGroup.Item
-                                action
-                                key={location.Key}
-                                active={index == activeOption}>
-                                {location.Country.EnglishName}, {location.AdministrativeArea.EnglishName}, {location.EnglishName}
-                            </ListGroup.Item>)
-                        })}
-                    </ListGroup>
-                </div>
-                : <div>
-                    <ListGroup>
-                        <ListGroup.Item>
-                            Nothing where found.
-                        </ListGroup.Item>
-                    </ListGroup>
-                </div>
+                ? <ListGroup>
+                    {locations.map((location, index) => {
+                        return (<ListGroup.Item
+                            action
+                            key={location.Key}
+                            active={index == activeOption}>
+                            {location.Country.EnglishName}, {location.AdministrativeArea.EnglishName}, {location.EnglishName}
+                        </ListGroup.Item>)
+                    })}
+                </ListGroup>
+                : <ListGroup>
+                    <ListGroup.Item>
+                        Nothing where found.
+                    </ListGroup.Item>
+                </ListGroup>
             }
-        </div>
+        </>
     )
 }
 

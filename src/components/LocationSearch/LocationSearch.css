@@ -1,3 +1,18 @@
+.location-search {
+    position: relative;
+}
+
+.location-search .menu {
+    box-sizing: borderbox;
+    position: absolute;
+    margin: 5px 0;
+    padding: 2px;
+    max-height: 300px;
+    width: 100%;
+    overflow: scroll;
+    /* border-bottom: var(--bs-border-width) solid var(--bs-border-color); */
+}
+
 .search {
     position: relative;
 }
@@ -29,11 +44,11 @@
     padding: 0;
 }
 
-.search-button img{
+.search-button img {
     height: 20px;
     vertical-align: sub;
 }
 
-.search-spiner{
+.search-spiner {
     margin: auto;
 }

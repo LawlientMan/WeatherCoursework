@@ -14,7 +14,7 @@ interface LocationSearchProps {
 
 const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
     const [activeOption, setActiveOption] = useState(-1);
-    const [showOptions, setShowOptions] = useState(false);
+    const [showOptions, setShowOptions] = useState(true);
 
     const [searchText, setSearchText] = useState('');
     const [runSearchText, setRunSearchText] = useState('');
@@ -87,7 +87,7 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
 
     return (
         <>
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} className="location-search">
                 <LocationSearchInput
                     isLoading={isLoading}
                     placeholder="Let's find a city"
@@ -99,7 +99,7 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
                 />
 
                 {!isLoading && showOptions &&
-                    <div>
+                    <div className='menu'>
                         {error
                             ? <>error</>
                             : <LocationOptions locations={getData} activeOption={activeOption} />
