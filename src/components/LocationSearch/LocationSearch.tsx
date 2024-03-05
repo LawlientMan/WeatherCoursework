@@ -15,80 +15,104 @@ interface LocationSearchProps {
 
 const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
     // const { data, error, isLoading } = useGetLocationsQuery(runSearchText, { skip: !shouldRunSearch })
-
+    const [menuOpen, setMenuOpen] = useState(false);
     const [activeOption, setActiveOption] = useState(-1);
-    const [open, setOpen] = useState(false);
 
     const [searchText, setSearchText] = useState('');
-    const [runSearchText, setRunSearchText] = useState('');
+    const [lastRunSearchText, setLastRunSearchText] = useState('');
+
+    const ref = useOutsideClick(() => setMenuOpen(false));
+
+    const showLocationSearchOptions = searchText && searchText == lastRunSearchText;
 
     const data: Location[] = jsonData;
-    const error: string = '12121';
+    const error: string = '';
     const [isLoading, setIsLoading] = useState(false);
-
-    const handleClickOutside = () => {
-        setOpen(false);
-    };
-
-    const ref = useOutsideClick(handleClickOutside);
-
-
-    const getData = searchText === runSearchText ? data : null;
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (activeOption < 0) {
-            setRunSearchText(searchText);
-            // setShowOptions(true);
+        if (activeOption < 0 || !showLocationSearchOptions) {
+            setLastRunSearchText(searchText);
             setActiveOption(-1);
             console.log('run search');
         }
         else {
-            // setShowOptions(false);
             onLocationSelected(data[activeOption]);
             setActiveOption(-1);
-            if (document.activeElement instanceof HTMLElement) {
-                document.activeElement.blur();
-            }
-
             console.log('form submitted');
         }
     }
 
     const onKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-            e.preventDefault();
-        }
+        if (!showLocationSearchOptions && data) return;
 
-        if (!data) return;
-
+        console.log( " data.length" + data.length)
         if (e.key === 'ArrowUp') {
+            console.log( " ArrowUp" + activeOption)
+
+            e.preventDefault();
             if (activeOption === 0)
                 return;
             setActiveOption(activeOption - 1);
+
+            console.log( " ArrowUp2" + activeOption)
+
+
         } else if (e.key === 'ArrowDown') {
-            if (activeOption - 1 === data.length)
+            console.log( " ArrowDown" + activeOption)
+
+            e.preventDefault();
+            if (activeOption === data.length - 1)
                 return;
             setActiveOption(activeOption + 1);
-        }
+
+            console.log( " ArrowDown2" + activeOption)
+        } else if (e.key === "Tab" && e.shiftKey) {
+
+            if (activeOption === 0){
+                setActiveOption(data.length - 1);
+            }
+            else{
+                setActiveOption(activeOption - 1);
+            }
+        
+            console.log( " Tab and shift" + activeOption)
+
+            e.preventDefault();
+        }else if (e.key === "Tab") {
+
+            if (activeOption === data.length - 1){
+                setActiveOption(0);
+            }
+            else{
+                setActiveOption(activeOption + 1);
+            }
+        
+            console.log( " Tab" + activeOption)
+
+            e.preventDefault();
+        } 
     };
 
     return (
         <>
-            <Form ref={ref}
+            <Form
+                ref={ref}
                 onSubmit={handleSubmit}
-                className="location-search">
+                className="location-search"
+                onKeyDown={onKeyDown}
+            >
                 <LocationSearchInput
-                    onClick={() => setOpen(true)}
+                    onClick={() => setMenuOpen(true)}
                     isLoading={isLoading}
                     placeholder="Let's find a city"
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
-                    onKeyDown={onKeyDown}
+
                 />
 
-                {!isLoading && open &&
+                {!isLoading && menuOpen &&
                     <div className='menu'>
                         {error
                             ? <ListGroup>
@@ -96,7 +120,15 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
                                     Something went wrong.
                                 </ListGroup.Item>
                             </ListGroup>
-                            : <LocationOptions locations={getData} activeOption={activeOption} />
+                            : <>
+                                {showLocationSearchOptions &&
+                                    <LocationOptions
+                                        locations={data}
+                                        activeOption={activeOption}
+                                        onLocationSelected={onLocationSelected}
+                                    />
+                                }
+                            </>
                         }
                     </div>
                 }
