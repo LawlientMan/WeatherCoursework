@@ -17,12 +17,17 @@ const LocationOption = ({ location, isActive, onLocationSelected }: InputProps) 
         }
     }, [isActive]);
 
+    const handleOnClick = (e: React.FormEvent) => {
+        e.preventDefault();
+        onLocationSelected(location);
+    }
+
     return (
         <ListGroup.Item
             ref={ref}
             action
             active={isActive}
-            onClick={() => onLocationSelected(location)}
+            onClick={handleOnClick}
         >
             {location.Country.EnglishName}, {location.AdministrativeArea.EnglishName}, {location.EnglishName}
         </ListGroup.Item>

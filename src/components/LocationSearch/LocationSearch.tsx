@@ -31,6 +31,7 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        console.log('handleSubmit');
 
         if (activeOption < 0 || !showLocationSearchOptions) {
             setLastRunSearchText(searchText);
@@ -52,7 +53,7 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
             console.log( " ArrowUp" + activeOption)
 
             e.preventDefault();
-            if (activeOption === 0)
+            if (activeOption <= 0)
                 return;
             setActiveOption(activeOption - 1);
 
@@ -63,14 +64,14 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
             console.log( " ArrowDown" + activeOption)
 
             e.preventDefault();
-            if (activeOption === data.length - 1)
+            if (activeOption >= data.length - 1)
                 return;
             setActiveOption(activeOption + 1);
 
             console.log( " ArrowDown2" + activeOption)
         } else if (e.key === "Tab" && e.shiftKey) {
 
-            if (activeOption === 0){
+            if (activeOption <= 0){
                 setActiveOption(data.length - 1);
             }
             else{
@@ -82,7 +83,7 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
             e.preventDefault();
         }else if (e.key === "Tab") {
 
-            if (activeOption === data.length - 1){
+            if (activeOption >= data.length - 1){
                 setActiveOption(0);
             }
             else{
@@ -91,6 +92,10 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
         
             console.log( " Tab" + activeOption)
 
+            e.preventDefault();
+        } else if (e.key === "Escape") {
+            setActiveOption(-1);
+            console.log( " Esc" + activeOption)
             e.preventDefault();
         } 
     };
@@ -102,14 +107,13 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
                 onSubmit={handleSubmit}
                 className="location-search"
                 onKeyDown={onKeyDown}
+                onClick={() => setMenuOpen(true)}
             >
                 <LocationSearchInput
-                    onClick={() => setMenuOpen(true)}
                     isLoading={isLoading}
                     placeholder="Let's find a city"
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
-
                 />
 
                 {!isLoading && menuOpen &&
