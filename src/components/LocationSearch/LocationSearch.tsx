@@ -5,6 +5,8 @@ import { Button, Form, ListGroup, Spinner, Stack } from 'react-bootstrap';
 import jsonData from "@/components/LocationSearch/TempLocationsResult.json";
 
 import "@/components/LocationSearch/LocationSearch.css";
+import LocationSearchInput from '@/components/LocationSearch/LocationSearchInput';
+import LocationOptions from '@/components/LocationSearch/LocationOptions';
 
 interface LocationSearchProps {
     onLocationSelected: (location: Location) => void;
@@ -86,55 +88,21 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
     return (
         <>
             <Form onSubmit={handleSubmit}>
-                <Form.Group className="search">
-                    <Form.Control
-                        className='search-input'
-                        type="search"
-                        placeholder="Let's find a city"
-                        value={searchText}
-                        onChange={(e) => handleInput(e.target.value)}
-                        onKeyDown={onKeyDown}
-                        onFocus={handleFocusEvent}
-                        onBlur={handleOnBlurEvent}
-                    />
-                    <div className='search-buttons'>
-                        {isLoading
-                            ? <Spinner className='search-spiner' animation="border" variant="primary" size="sm" />
-                            : <button className='search-button' type="submit">
-                                <img src="/src/assets/icons/searchx32.svg" alt="search" />
-                            </button>
-                        }
-                    </div>
-                </Form.Group>
+                <LocationSearchInput
+                    isLoading={isLoading}
+                    placeholder="Let's find a city"
+                    value={searchText}
+                    onChange={(e) => handleInput(e.target.value)}
+                    onKeyDown={onKeyDown}
+                    onFocus={handleFocusEvent}
+                    onBlur={handleOnBlurEvent}
+                />
 
-                {isLoading &&
+                {!isLoading && showOptions &&
                     <div>
-                        Loading....
-                    </div>
-                }
-
-                {!isLoading && !error && getData && showOptions &&
-                    <div>
-                        {getData.length > 0
-                            ? <div>
-                                <ListGroup>
-                                    {getData.map((location, index) => {
-                                        return (<ListGroup.Item
-                                            action
-                                            key={location.Key}
-                                            active={index == activeOption}>
-                                            {location.Country.EnglishName}, {location.AdministrativeArea.EnglishName}, {location.EnglishName}
-                                        </ListGroup.Item>)
-                                    })}
-                                </ListGroup>
-                            </div>
-                            : <div>
-                                <ListGroup>
-                                    <ListGroup.Item>
-                                        Nothing where found.
-                                    </ListGroup.Item>
-                                </ListGroup>
-                            </div>
+                        {error
+                            ? <>error</>
+                            : <LocationOptions locations={getData} activeOption={activeOption} />
                         }
                     </div>
                 }
