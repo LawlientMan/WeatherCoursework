@@ -9,11 +9,12 @@ export const locationsApi = createApi({
     }),
     endpoints: (builder) => ({
         getLocations: builder.query<Location[], string>({
-            query: (q) => {
+            query: (search) => {
+                console.log('run location search :' + search)
                 return {
                     url: '/',
                     params: { 
-                        q,
+                        q : search,
                         apikey: appConfig.accuWeatherApiKey
                     },
                 };

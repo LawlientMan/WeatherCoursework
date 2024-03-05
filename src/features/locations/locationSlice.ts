@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface LocationsState {
     locations: String[];
-    error: string | null;
+    search: '';
 }
 
 const initialState: LocationsState = {
     locations: [],
-    error: null,
+    search: '',
 }
 
 export const locationsSlice = createSlice({
