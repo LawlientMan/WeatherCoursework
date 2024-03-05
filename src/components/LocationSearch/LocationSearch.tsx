@@ -1,8 +1,10 @@
 import { useGetLocationsQuery } from '@/features/locations/locationsApi'
 import { Location } from '@/shared/types/Location';
-import React, { useState , FocusEvent } from 'react'
+import React, { useState, FocusEvent } from 'react'
 import { Button, Form, ListGroup, Stack } from 'react-bootstrap';
 import jsonData from "@/components/LocationSearch/TempLocationsResult.json";
+
+import "@/components/LocationSearch/LocationSearch.css";
 
 interface LocationSearchProps {
     onLocationSelected: (location: Location) => void;
@@ -29,13 +31,13 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        if(activeOption < 0){
+        if (activeOption < 0) {
             setRunSearchText(searchText);
             setShowOptions(true);
             setActiveOption(-1);
             console.log('run search');
         }
-        else{
+        else {
             setShowOptions(false);
             onLocationSelected(data[activeOption]);
             setActiveOption(-1);
@@ -71,7 +73,7 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
     }
 
     const handleFocusEvent = (e: FocusEvent<HTMLInputElement>) => {
-        if(data && data.length > 0) {
+        if (data && data.length > 0) {
             setShowOptions(true);
         }
     }
@@ -84,24 +86,21 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
     return (
         <>
             <Form onSubmit={handleSubmit}>
-                <Stack direction="horizontal" gap={3}>
-                    <Form.Group className="">
-                        <Form.Control
-                            type="text"
-                            placeholder="Let's find a city"
-                            value={searchText}
-                            onChange={(e) => handleInput(e.target.value)}
-                            onKeyDown={onKeyDown} 
-                            onFocus={handleFocusEvent}
-                            onBlur={handleOnBlurEvent}
-                            />
-
-                    </Form.Group>
-
-                    <Button variant="primary" type="submit">
-                        Submit
-                    </Button>
-                </Stack>
+                <Form.Group className="search">
+                    <Form.Control
+                        className='search-input'
+                        type="search"
+                        placeholder="Let's find a city"
+                        value={searchText}
+                        onChange={(e) => handleInput(e.target.value)}
+                        onKeyDown={onKeyDown}
+                        onFocus={handleFocusEvent}
+                        onBlur={handleOnBlurEvent}
+                    />
+                    <button className='search-button' type="submit">
+                        <img src="/src/assets/icons/searchx32.svg" alt="search" />
+                    </button>
+                </Form.Group>
 
                 {isLoading &&
                     <div>
@@ -114,7 +113,7 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
                         {getData.length > 0
                             ? <div>
                                 <ListGroup>
-                                    {getData.map((location,index) => {
+                                    {getData.map((location, index) => {
                                         return (<ListGroup.Item
                                             action
                                             key={location.Key}
