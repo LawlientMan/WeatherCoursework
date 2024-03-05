@@ -1,7 +1,7 @@
 import { useGetLocationsQuery } from '@/features/locations/locationsApi'
 import { Location } from '@/shared/types/Location';
 import React, { useState, FocusEvent } from 'react'
-import { Button, Form, ListGroup, Stack } from 'react-bootstrap';
+import { Button, Form, ListGroup, Spinner, Stack } from 'react-bootstrap';
 import jsonData from "@/components/LocationSearch/TempLocationsResult.json";
 
 import "@/components/LocationSearch/LocationSearch.css";
@@ -24,7 +24,7 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
 
     const data: Location[] = jsonData;
     const error: string = '';
-    const isLoading: Boolean = false;
+    const [isLoading, setIsLoading] = useState(false);
 
     const getData = searchText === runSearchText ? data : null;
 
@@ -97,9 +97,14 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
                         onFocus={handleFocusEvent}
                         onBlur={handleOnBlurEvent}
                     />
-                    <button className='search-button' type="submit">
-                        <img src="/src/assets/icons/searchx32.svg" alt="search" />
-                    </button>
+                    <div className='search-buttons'>
+                        {isLoading
+                            ? <Spinner className='search-spiner' animation="border" variant="primary" size="sm" />
+                            : <button className='search-button' type="submit">
+                                <img src="/src/assets/icons/searchx32.svg" alt="search" />
+                            </button>
+                        }
+                    </div>
                 </Form.Group>
 
                 {isLoading &&
