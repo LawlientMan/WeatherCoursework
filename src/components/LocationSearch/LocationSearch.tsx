@@ -8,26 +8,27 @@ import "@/components/LocationSearch/LocationSearch.css";
 import LocationSearchInput from '@/components/LocationSearch/LocationSearchInput';
 import LocationOptions from '@/components/LocationSearch/LocationOptions';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
+import { useListKeyboardNavigation } from '@/components/LocationSearch/useListKeyboardNavigation';
 
 interface LocationSearchProps {
     onLocationSelected: (location: Location) => void;
 }
 
 const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
-    // const { data, error, isLoading } = useGetLocationsQuery(runSearchText, { skip: !shouldRunSearch })
     const [menuOpen, setMenuOpen] = useState(false);
-    const [activeOption, setActiveOption] = useState(-1);
+    const searchElementRef = useOutsideClick(() => setMenuOpen(false));
 
     const [searchText, setSearchText] = useState('');
     const [lastRunSearchText, setLastRunSearchText] = useState('');
 
-    const ref = useOutsideClick(() => setMenuOpen(false));
-
     const showLocationSearchOptions = searchText && searchText == lastRunSearchText;
+    const { data, error, isFetching } = useGetLocationsQuery(lastRunSearchText, { skip: !showLocationSearchOptions })
 
-    const data: Location[] = jsonData;
-    const error: string = '';
-    const [isLoading, setIsLoading] = useState(false);
+    // const data: Location[] = jsonData;
+    // const error: string = '';
+    // const [isLoading, setIsLoading] = useState(false);
+
+    const [onKeyDown, activeOption, setActiveOption] = useListKeyboardNavigation(menuOpen && showLocationSearchOptions && data ? data.length : null);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -38,85 +39,36 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
             setActiveOption(-1);
             console.log('run search');
         }
-        else {
+        else if(data) {
             onLocationSelected(data[activeOption]);
+            setMenuOpen(false);
             setActiveOption(-1);
             console.log('form submitted');
         }
     }
 
-    const onKeyDown = (e: React.KeyboardEvent) => {
-        if (!showLocationSearchOptions && data) return;
-
-        console.log( " data.length" + data.length)
-        if (e.key === 'ArrowUp') {
-            console.log( " ArrowUp" + activeOption)
-
-            e.preventDefault();
-            if (activeOption <= 0)
-                return;
-            setActiveOption(activeOption - 1);
-
-            console.log( " ArrowUp2" + activeOption)
-
-
-        } else if (e.key === 'ArrowDown') {
-            console.log( " ArrowDown" + activeOption)
-
-            e.preventDefault();
-            if (activeOption >= data.length - 1)
-                return;
-            setActiveOption(activeOption + 1);
-
-            console.log( " ArrowDown2" + activeOption)
-        } else if (e.key === "Tab" && e.shiftKey) {
-
-            if (activeOption <= 0){
-                setActiveOption(data.length - 1);
-            }
-            else{
-                setActiveOption(activeOption - 1);
-            }
-        
-            console.log( " Tab and shift" + activeOption)
-
-            e.preventDefault();
-        }else if (e.key === "Tab") {
-
-            if (activeOption >= data.length - 1){
-                setActiveOption(0);
-            }
-            else{
-                setActiveOption(activeOption + 1);
-            }
-        
-            console.log( " Tab" + activeOption)
-
-            e.preventDefault();
-        } else if (e.key === "Escape") {
-            setActiveOption(-1);
-            console.log( " Esc" + activeOption)
-            e.preventDefault();
-        } 
-    };
+    const handleLocationSelect = (location: Location) => {
+        setMenuOpen(false);
+        onLocationSelected(location);
+    }
 
     return (
         <>
             <Form
-                ref={ref}
+                ref={searchElementRef}
                 onSubmit={handleSubmit}
                 className="location-search"
                 onKeyDown={onKeyDown}
-                onClick={() => setMenuOpen(true)}
             >
                 <LocationSearchInput
-                    isLoading={isLoading}
+                    isLoading={isFetching}
                     placeholder="Let's find a city"
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
+                    onClick={() => setMenuOpen(true)}
                 />
 
-                {!isLoading && menuOpen &&
+                {!isFetching && menuOpen &&
                     <div className='menu'>
                         {error
                             ? <ListGroup>
@@ -125,11 +77,11 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
                                 </ListGroup.Item>
                             </ListGroup>
                             : <>
-                                {showLocationSearchOptions &&
+                                {showLocationSearchOptions && data &&
                                     <LocationOptions
                                         locations={data}
                                         activeOption={activeOption}
-                                        onLocationSelected={onLocationSelected}
+                                        onLocationSelected={handleLocationSelect}
                                     />
                                 }
                             </>

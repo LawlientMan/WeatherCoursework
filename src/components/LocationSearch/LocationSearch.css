@@ -8,7 +8,7 @@
     margin: 5px 0;
     max-height: 300px;
     width: 100%;
-    overflow: scroll;
+    overflow: auto;
     /* border-bottom: var(--bs-border-width) solid var(--bs-border-color); */
 }
 

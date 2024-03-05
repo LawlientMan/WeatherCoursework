@@ -3,15 +3,15 @@ import { Form, Spinner } from 'react-bootstrap'
 
 type A = React.InputHTMLAttributes<HTMLInputElement>;
 
-interface InputProps extends Omit<A,'loading'> {
+interface InputProps extends Omit<A, 'loading'> {
     isLoading: Boolean;
 }
 
 const LocationSearchInput = (props: InputProps) => {
-    const { isLoading, style, className, type, ...rest } = props;
+    const { isLoading, style, className, onClick, type, ...rest } = props;
 
     return (
-        <Form.Group className="search">
+        <Form.Group className="search" onClick={onClick}>
             <Form.Control
                 className='search-input'
                 type="search"
