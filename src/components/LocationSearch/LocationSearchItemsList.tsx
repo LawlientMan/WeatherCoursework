@@ -1,6 +1,6 @@
 import { ListGroup } from 'react-bootstrap';
 import { Location } from '@/shared/types/Location';
-import LocationOption from '@/components/LocationSearch/LocationOption';
+import LocationSearchItem from '@/components/LocationSearch/LocationSearchItem';
 
 interface InputProps {
     locations: Location[] | null;
@@ -8,14 +8,14 @@ interface InputProps {
     onLocationSelected: (location: Location) => void;
 }
 
-const LocationOptions = ({ locations, activeOption, onLocationSelected }: InputProps) => {
+const LocationSearchItemsList = ({ locations, activeOption, onLocationSelected }: InputProps) => {
     return (
         <>
             {locations && locations.length > 0
                 ? <ListGroup>
                     {locations.map((location, index) => {
                         return (
-                            <LocationOption
+                            <LocationSearchItem
                                 key={location.Key}
                                 location={location}
                                 isActive={index === activeOption}
@@ -34,4 +34,4 @@ const LocationOptions = ({ locations, activeOption, onLocationSelected }: InputP
     )
 }
 
-export default LocationOptions
+export default LocationSearchItemsList

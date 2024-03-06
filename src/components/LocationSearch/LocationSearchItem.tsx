@@ -8,7 +8,7 @@ interface InputProps {
     onLocationSelected: (location: Location) => void;
 }
 
-const LocationOption = ({ location, isActive, onLocationSelected }: InputProps) => {
+const LocationSearchItem = ({ location, isActive, onLocationSelected }: InputProps) => {
     const ref = useRef<HTMLElement>();
 
     useEffect(() => {
@@ -34,4 +34,4 @@ const LocationOption = ({ location, isActive, onLocationSelected }: InputProps) 
     )
 }
 
-export default LocationOption
+export default LocationSearchItem

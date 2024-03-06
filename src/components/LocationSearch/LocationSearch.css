@@ -39,9 +39,14 @@
     background-color: inherit;
     height: 100%;
     width: 100%;
-    margin: 0 5px;
     padding: 0;
+    border-top-right-radius: var(--bs-border-radius);
+    border-bottom-right-radius: var(--bs-border-radius);
 }
+
+.search-button:hover {
+    background-color: var(--bs-border-color);
+  }
 
 .search-button img {
     height: 20px;
