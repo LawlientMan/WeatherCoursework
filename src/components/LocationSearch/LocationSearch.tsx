@@ -5,7 +5,7 @@ import { Form, ListGroup } from 'react-bootstrap';
 
 import "@/components/LocationSearch/LocationSearch.css";
 import LocationSearchInput from '@/components/LocationSearch/LocationSearchInput';
-import LocationSearchItemsList from '@/components/LocationSearch/LocationSearchItemsList';
+import LocationSearchItemsList from '@/components/LocationSearch/LocationOptions';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { useListKeyboardNavigation } from '@/components/LocationSearch/useListKeyboardNavigation';
 
