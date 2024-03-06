@@ -11,18 +11,28 @@ import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { useListKeyboardNavigation } from '@/components/LocationSearch/useListKeyboardNavigation';
 
 interface LocationSearchProps {
+    selectedLocation: Location | null;
     onLocationSelected: (location: Location) => void;
 }
 
-const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
+const LocationSearch = ({ onLocationSelected, selectedLocation }: LocationSearchProps) => {
     const [menuOpen, setMenuOpen] = useState(false);
-    const searchElementRef = useOutsideClick(() => setMenuOpen(false));
 
     const [searchText, setSearchText] = useState('');
     const [lastRunSearchText, setLastRunSearchText] = useState('');
 
     const showLocationSearchOptions = searchText && searchText == lastRunSearchText;
     const { data, error, isFetching } = useGetLocationsQuery(lastRunSearchText, { skip: !showLocationSearchOptions })
+
+    const handleOutsideClick = () => {
+        setSearchText('');
+        setMenuOpen(false);
+        setActiveOption(-1);
+        setLastRunSearchText('');
+    }
+
+    const searchElementRef = useOutsideClick(handleOutsideClick);
+    const inputPlaceHolder = selectedLocation && !menuOpen ? `${selectedLocation.Country.EnglishName} ${selectedLocation.EnglishName}` : "Let's find a city";
 
     // const data: Location[] = jsonData;
     // const error: string = '';
@@ -39,16 +49,28 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
             setActiveOption(-1);
             console.log('run search');
         }
-        else if(data) {
-            onLocationSelected(data[activeOption]);
+        else if (data) {
+            setSearchText('');
             setMenuOpen(false);
             setActiveOption(-1);
+            setLastRunSearchText('');
+
+            onLocationSelected(data[activeOption]);
+
+            if (document.activeElement instanceof HTMLElement) {
+                document.activeElement.blur();
+            }
+
             console.log('form submitted');
         }
     }
 
     const handleLocationSelect = (location: Location) => {
+        setSearchText('');
+        setLastRunSearchText('');
         setMenuOpen(false);
+        setActiveOption(-1);
+
         onLocationSelected(location);
     }
 
@@ -62,7 +84,7 @@ const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
             >
                 <LocationSearchInput
                     isLoading={isFetching}
-                    placeholder="Let's find a city"
+                    placeholder={inputPlaceHolder}
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
                     onClick={() => setMenuOpen(true)}
