@@ -1,3 +1,4 @@
+import WeatherIcon from '@/components/Weather/common/WeatherIcon';
 import { useGetCurrentWeatherQuery } from '@/features/weather/weatherApi';
 import { IRootState } from '@/store';
 import React from 'react'
@@ -9,7 +10,8 @@ const WeatherNow = () => {
 
     return (
         <>
-            <div>WeatherNow</div>
+            <div>WeatherNow</div>               
+            <WeatherIcon imageIndex={data?.WeatherIcon}/>
             <div><pre>{JSON.stringify(data, null, 2) }</pre></div>
         </>
     )

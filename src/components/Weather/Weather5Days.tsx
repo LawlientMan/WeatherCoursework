@@ -1,3 +1,4 @@
+import WeatherIcon from '@/components/Weather/common/WeatherIcon';
 import { useGet5DaysWeatherQuery } from '@/features/weather/weatherApi';
 import { IRootState } from '@/store';
 import React from 'react'

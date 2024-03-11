@@ -9,6 +9,7 @@ import { Col, Row, ToggleButton, ToggleButtonGroup } from "react-bootstrap"
 import { useSelector } from "react-redux"
 import Weather5Days from "@/components/Weather/Weather5Days"
 import WeatherHourly from "@/components/Weather/WeatherHourly"
+import WeatherIcon from "@/components/Weather/common/WeatherIcon"
 
 enum ViewMode {
     Now,
@@ -41,7 +42,7 @@ const WeatherPage = () => {
                 <Col xl={4} md={6} xs={12} mb={3} className="mb-3">
                     <LocationSearch onLocationSelected={handleLocationSelection} selectedLocation={selectedLocation} />
                 </Col>
-
+                
                 {selectedLocation &&
                     <>
                         <Col className="mb-3">
