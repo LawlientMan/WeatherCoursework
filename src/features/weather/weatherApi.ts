@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { appConfig } from "@/config/appConfig";
 import { WeatherDaily } from "@/shared/types/WeatherDaily";
 import { CurrentConditions } from "@/shared/types/CurrentConditions";
+import { HourlyWeather } from "@/shared/types/HourlyWeather";
 
 export const weatherApi = createApi({
     reducerPath: "weatherApi",
@@ -9,22 +10,11 @@ export const weatherApi = createApi({
         baseUrl: "http://dataservice.accuweather.com",
     }),
     endpoints: (builder) => ({
-        getTodaysWeather: builder.query<WeatherDaily, string>({
+        get5DaysWeather: builder.query<WeatherDaily, string>({
             query: (locationKey) => {
-                console.log('run weather search :' + locationKey)
+                console.log('run weather 5day search :' + locationKey)
                 return {
-                    url: `/forecasts/v1/daily/1day/${locationKey}/`,
-                    params: { 
-                        apikey: appConfig.accuWeatherApiKey
-                    },
-                };
-            }
-        }),
-        getTenDaysWeather: builder.query<WeatherDaily, string>({
-            query: (locationKey) => {
-                console.log('run weather search :' + locationKey)
-                return {
-                    url: `/forecasts/v1/daily/10day/${locationKey}/`,
+                    url: `/forecasts/v1/daily/5day/${locationKey}/`,
                     params: { 
                         apikey: appConfig.accuWeatherApiKey
                     },
@@ -42,7 +32,19 @@ export const weatherApi = createApi({
                 };
             }
         }),
+        getHourlyWeather: builder.query<HourlyWeather[], string>({
+            query: (locationKey) => {
+                console.log('run weather hourly search :' + locationKey)
+                return {
+                    url: `forecasts/v1/hourly/12hour/${locationKey}/`,
+                    params: { 
+                        apikey: appConfig.accuWeatherApiKey
+                    },
+                };
+            }
+        }),
     }),
 });
 
-export const { useGetTodaysWeatherQuery, useGetTenDaysWeatherQuery, useGetCurrentWeatherQuery } = weatherApi;
+export const { useGet5DaysWeatherQuery,
+    useGetCurrentWeatherQuery, useGetHourlyWeatherQuery } = weatherApi;

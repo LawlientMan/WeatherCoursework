@@ -1,25 +1,38 @@
 import LocationSearch from "@/components/LocationSearch/LocationSearch"
 import SEO from "@/components/SEO/SEO"
+import WeatherNow from "@/components/Weather/WeatherNow"
 import { locationsSlice } from "@/features/locations/locationSlice"
-import { useGetTodaysWeatherQuery } from "@/features/weather/weatherApi"
 import { Location } from "@/shared/types/Location"
 import store, { IRootState } from "@/store"
 import { useState } from "react"
 import { Col, Row, ToggleButton, ToggleButtonGroup } from "react-bootstrap"
 import { useSelector } from "react-redux"
+import Weather5Days from "@/components/Weather/Weather5Days"
+import WeatherHourly from "@/components/Weather/WeatherHourly"
+
+enum ViewMode {
+    Now,
+    Hourly,
+    FiveDays
+}
 
 const WeatherPage = () => {
     const selectedLocation = useSelector((state: IRootState) => state.locations.selectedLocation);
-
-    // const [selectedLocation, setSelectedLocation] = useState<Location | null>(null)
-    const { data, error, isFetching } = useGetTodaysWeatherQuery(selectedLocation?.Key || '', { skip: !selectedLocation })
+    const [viewMode, setViewMode] = useState(ViewMode.Now);
 
     const handleLocationSelection = (location: Location) => {
         console.log(location);
         store.dispatch(locationsSlice.actions.setCurrentLocation(location))
     }
 
-    console.log(data);
+    const weatcherViewComponent = () => {
+        switch (viewMode) {
+            case ViewMode.Now: return <WeatherNow />;
+            case ViewMode.Hourly: return <WeatherHourly />;
+            case ViewMode.FiveDays: return <Weather5Days />;
+            default: <></>
+        }
+    }
 
     return (
         <>
@@ -30,21 +43,29 @@ const WeatherPage = () => {
                 </Col>
 
                 {selectedLocation &&
-                    <Col className="mb-3">
-                        <ToggleButtonGroup type="radio" name="options" defaultValue={1}>
-                            <ToggleButton className="toggle-mode" id="tbg-now" variant="outline-primary" value={1}>
-                                Now
-                            </ToggleButton>
-                            <ToggleButton className="toggle-mode" id="tbg-today" variant="outline-primary" value={2}>
-                                Today
-                            </ToggleButton>
-                            <ToggleButton className="toggle-mode" id="tbg-tendays" variant="outline-primary" value={3}>
-                                10 Days
-                            </ToggleButton>
-                        </ToggleButtonGroup>
-                    </Col>
+                    <>
+                        <Col className="mb-3">
+                            <ToggleButtonGroup type="radio" name="options" value={viewMode} onChange={setViewMode}>
+                                <ToggleButton className="toggle-mode" id="tbg-now" variant="outline-primary" value={ViewMode.Now}>
+                                    Now
+                                </ToggleButton>
+                                <ToggleButton className="toggle-mode" id="tbg-hourly" variant="outline-primary" value={ViewMode.Hourly}>
+                                    Hourly
+                                </ToggleButton>
+                                <ToggleButton className="toggle-mode" id="tbg-tendays" variant="outline-primary" value={ViewMode.FiveDays}>
+                                    5 Days
+                                </ToggleButton>
+                            </ToggleButtonGroup>
+                        </Col>
+                    </>
+
                 }
             </Row>
+            {selectedLocation &&
+                <Row>
+                    {weatcherViewComponent()}
+                </Row>
+            }
         </>
     )
 }
