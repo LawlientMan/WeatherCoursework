@@ -1,32 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { Location } from "@/shared/types/Location";
 
 interface LocationsState {
-    locations: String[];
-    search: '';
+    selectedLocation: Location | null
 }
 
 const initialState: LocationsState = {
-    locations: [],
-    search: '',
+    selectedLocation: null,
 }
 
 export const locationsSlice = createSlice({
     name: "locations",
     initialState,
     reducers: {
-    //   getUsersStart(state) {
-    //     state.loading = true;
-    //   },
-    //   getUsersSuccess(state, action: PayloadAction<User[]>) {
-    //     state.users = action.payload;
-    //     state.loading = false;
-    //     state.error = null;
-    //   },
-    //   getUsersFailure(state, action: PayloadAction<string>) {
-    //     state.loading = false;
-    //     state.error = action.payload;
-    //   },
+        setCurrentLocation(state, action: PayloadAction<Location | null>) {
+            state.selectedLocation = action.payload;
+        }
     },
-  });
+});
 
-  export default locationsSlice.reducer;
+export default locationsSlice.reducer;
+export const { setCurrentLocation } = locationsSlice.actions

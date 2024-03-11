@@ -1,17 +1,22 @@
 import LocationSearch from "@/components/LocationSearch/LocationSearch"
 import SEO from "@/components/SEO/SEO"
+import { locationsSlice } from "@/features/locations/locationSlice"
 import { useGetTodaysWeatherQuery } from "@/features/weather/weatherApi"
 import { Location } from "@/shared/types/Location"
+import store, { IRootState } from "@/store"
 import { useState } from "react"
 import { Col, Row, ToggleButton, ToggleButtonGroup } from "react-bootstrap"
+import { useSelector } from "react-redux"
 
 const WeatherPage = () => {
-    const [selectedLocation, setSelectedLocation] = useState<Location | null>(null)
+    const selectedLocation = useSelector((state: IRootState) => state.locations.selectedLocation);
+
+    // const [selectedLocation, setSelectedLocation] = useState<Location | null>(null)
     const { data, error, isFetching } = useGetTodaysWeatherQuery(selectedLocation?.Key || '', { skip: !selectedLocation })
 
     const handleLocationSelection = (location: Location) => {
         console.log(location);
-        setSelectedLocation(location);
+        store.dispatch(locationsSlice.actions.setCurrentLocation(location))
     }
 
     console.log(data);

@@ -18,3 +18,6 @@ export const store = configureStore({
 });
 
 setupListeners(store.dispatch)
+
+export type IRootState = ReturnType<typeof store.getState>
+export default store;
