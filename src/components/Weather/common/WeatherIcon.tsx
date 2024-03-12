@@ -10,7 +10,7 @@ const WeatherIcon = (props: InputProps) => {
 
     const deafultImage = '/src/assets/weatherNotFound.png';
     const src = imageIndex
-        ? `https://developer.accuweather.com/sites/default/files/${imageIndex}-s.png`
+        ? `https://developer.accuweather.com/sites/default/files/${String(imageIndex).padStart(2, '0')}-s.png`
         : deafultImage;
 
     function onImageError(event: SyntheticEvent<HTMLImageElement, Event>): void {

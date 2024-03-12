@@ -1,15 +1,14 @@
 import LocationSearch from "@/components/LocationSearch/LocationSearch"
 import SEO from "@/components/SEO/SEO"
-import WeatherNow from "@/components/Weather/WeatherNow"
+import WeatherNow from "@/components/Weather/Now/WeatherNow"
 import { locationsSlice } from "@/features/locations/locationSlice"
 import { Location } from "@/shared/types/Location"
 import store, { IRootState } from "@/store"
 import { useState } from "react"
 import { Col, Row, ToggleButton, ToggleButtonGroup } from "react-bootstrap"
 import { useSelector } from "react-redux"
-import Weather5Days from "@/components/Weather/Weather5Days"
-import WeatherHourly from "@/components/Weather/WeatherHourly"
-import WeatherIcon from "@/components/Weather/common/WeatherIcon"
+import Weather5Days from "@/components/Weather/5Days/Weather5Days"
+import WeatherHourly from "@/components/Weather/Hourly/WeatherHourly"
 
 enum ViewMode {
     Now,
@@ -39,7 +38,7 @@ const WeatherPage = () => {
         <>
             <SEO title="Weather Page" description="This is the weather page of weather website." />
             <Row>
-                <Col xl={4} md={6} xs={12} mb={3} className="mb-3">
+                <Col xl={4} md={6} xs={12} className="mb-3">
                     <LocationSearch onLocationSelected={handleLocationSelection} selectedLocation={selectedLocation} />
                 </Col>
                 

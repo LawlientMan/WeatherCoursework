@@ -1,0 +1,26 @@
+.weather-conditions {
+    height: 100%
+}
+
+.weather-text {
+    font-weight: 700;
+    font-size: 22px;
+}
+
+.weather-temperature{
+    font-size: 26px;
+}
+
+.weather-icon{
+    width: 100%;
+}
+
+@media screen and (max-width: 576px) {
+    .weather-text {
+        font-size: 16px;
+    }
+
+    .weather-temperature{
+        font-size: 18px;
+    }
+}

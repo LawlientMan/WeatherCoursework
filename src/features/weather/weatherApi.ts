@@ -22,6 +22,7 @@ export const weatherApi = createApi({
             }
         }),
         getCurrentWeather: builder.query<CurrentConditions, string>({
+            transformResponse: (response: CurrentConditions[], meta, arg) => response[0],
             query: (locationKey) => {
                 console.log('run weather CurrentConditions search :' + locationKey)
                 return {
