@@ -4,6 +4,8 @@ export interface HourlyWeather {
   WeatherIcon: number
   IconPhrase: string
   HasPrecipitation: boolean
+  PrecipitationType: string,
+  PrecipitationIntensity: string,
   IsDaylight: boolean
   Temperature: Temperature
   PrecipitationProbability: number

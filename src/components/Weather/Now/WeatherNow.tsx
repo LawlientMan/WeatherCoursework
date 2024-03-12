@@ -41,7 +41,8 @@ const WeatherNow = () => {
                     </Col>
                 </>
             }
-            <div><pre>{JSON.stringify(data, null, 2)}</pre></div>
+            {/* TODO delete */}
+            {/* <div><pre>{JSON.stringify(data, null, 2)}</pre></div> */}
         </>
     )
 }
