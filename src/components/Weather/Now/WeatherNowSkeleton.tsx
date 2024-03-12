@@ -1,5 +1,4 @@
 import WeatherIcon from '@/components/Weather/common/WeatherIcon'
-import React from 'react'
 import { Card, Col, Placeholder, Row } from 'react-bootstrap'
 
 const WeatherNowSkeleton = () => {

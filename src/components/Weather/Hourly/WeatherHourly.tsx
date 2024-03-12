@@ -2,8 +2,7 @@ import WeatherHourlySkeleton from '@/components/Weather/Hourly/WeatherHourlySkel
 import WeatherIcon from '@/components/Weather/common/WeatherIcon';
 import { useGetHourlyWeatherQuery } from '@/features/weather/weatherApi';
 import { IRootState } from '@/store';
-import React from 'react'
-import { Alert, Card, Col, Row } from 'react-bootstrap';
+import { Alert, Card, Col } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 
 const WeatherHourly = () => {

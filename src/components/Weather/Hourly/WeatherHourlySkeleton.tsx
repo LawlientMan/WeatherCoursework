@@ -1,6 +1,5 @@
 import WeatherIcon from '@/components/Weather/common/WeatherIcon'
-import React from 'react'
-import { Card, Col, Placeholder, Row } from 'react-bootstrap'
+import { Card, Col, Placeholder } from 'react-bootstrap'
 
 const WeatherHourlySkeleton = () => {
     const array = [...Array(12).keys()];
