@@ -1,6 +1,6 @@
 import { ListGroup } from 'react-bootstrap';
 import { Location } from '@/shared/types/Location';
-import LocationSearchItem from '@/components/LocationSearch/LocationSearchItem';
+import LocationSearchItem from '@/components/LocationSearch/SearchMenus/LocationSearchItem';
 
 interface InputProps {
     locations: Location[] | null;

@@ -5,17 +5,18 @@ import { Form, ListGroup } from 'react-bootstrap';
 
 import "@/components/LocationSearch/LocationSearch.css";
 import LocationSearchInput from '@/components/LocationSearch/LocationSearchInput';
-import LocationSearchItemsList from '@/components/LocationSearch/LocationOptions';
+import LocationSearchItemsList from '@/components/LocationSearch/SearchMenus/LocationOptions';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { useListKeyboardNavigation } from '@/components/LocationSearch/useListKeyboardNavigation';
 import store, { IRootState } from '@/store';
 import { locationsSlice } from '@/features/locations/locationSlice';
 import { useSelector } from 'react-redux';
+import FavoriteLocationOptions from '@/components/LocationSearch/SearchMenus/FavoriteLocationOptions';
 
 interface LocationSearchProps {
 }
 
-const LocationSearch = ( {}: LocationSearchProps) => {
+const LocationSearch = ({ }: LocationSearchProps) => {
     const selectedLocation = useSelector((state: IRootState) => state.locations.selectedLocation);
     const [menuOpen, setMenuOpen] = useState(false);
 
@@ -94,11 +95,16 @@ const LocationSearch = ( {}: LocationSearchProps) => {
                             </ListGroup>
                             : <>
                                 {showLocationSearchOptions && data &&
-                                    <LocationSearchItemsList
-                                        locations={data}
-                                        activeOption={activeOption}
-                                        onLocationSelected={handleLocationSelect}
-                                    />
+                                    <>
+                                        <LocationSearchItemsList
+                                            locations={data}
+                                            activeOption={activeOption}
+                                            onLocationSelected={handleLocationSelect}
+                                        />
+                                        <FavoriteLocationOptions
+                                            activeOption={activeOption}
+                                            onLocationSelected={handleLocationSelect} />
+                                    </>
                                 }
                             </>
                         }
