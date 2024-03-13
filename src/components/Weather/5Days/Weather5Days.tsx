@@ -2,6 +2,7 @@ import Weather5DaysSkeleton from '@/components/Weather/5Days/Weather5DaysSkeleto
 import WeatherIcon from '@/components/Weather/common/WeatherIcon';
 import { useGet5DaysWeatherQuery } from '@/features/weather/weatherApi';
 import { IRootState } from '@/store';
+import { formatInTimeZone } from 'date-fns-tz';
 import { Alert, Card, Col, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 
@@ -9,17 +10,18 @@ const Weather5Days = () => {
     const selectedLocation = useSelector((state: IRootState) => state.locations.selectedLocation);
     const { data, error, isFetching } = useGet5DaysWeatherQuery(selectedLocation?.Key || '', { skip: !selectedLocation })
 
+    if(!selectedLocation) return;
     if (isFetching) return <Weather5DaysSkeleton/>;
     if (error || !data) return <Alert variant='danger'> Something went wrong. </Alert>;
 
     return (
         <>
-            <div>Weather5Days</div>
+
             {data.DailyForecasts.map((record) => (
                 <Col key={record.Date} className="mb-3" xs={12} md={6} xxl>
                     <Card className='h-100'>
                         <Card.Body>
-                            <Card.Title>{record.Date}</Card.Title>
+                            <Card.Title>{formatInTimeZone(record.Date, selectedLocation.TimeZone.Name, 'EEEE, LLL do')}</Card.Title>
                             <Card.Subtitle className="text-muted mb-3">{record.Temperature.Maximum.Value}{record.Temperature.Maximum.Unit} / {record.Temperature.Minimum.Value}{record.Temperature.Minimum.Unit}</Card.Subtitle>
                             <Row>
                                 <Col>

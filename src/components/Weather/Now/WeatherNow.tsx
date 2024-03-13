@@ -5,13 +5,14 @@ import { Alert, Card, Col, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import '@/components/Weather/Now/WeatherNow.css'
 import WeatherNowSkeleton from '@/components/Weather/Now/WeatherNowSkeleton';
+import { formatInTimeZone } from 'date-fns-tz';
 
 const WeatherNow = () => {
     const selectedLocation = useSelector((state: IRootState) => state.locations.selectedLocation);
     const { data, error, isFetching } = useGetCurrentWeatherQuery(selectedLocation?.Key || '', { skip: !selectedLocation })
 
+    if(!selectedLocation) return;
     if (isFetching) return <WeatherNowSkeleton />;
-
     if (error || !data) return <Alert variant='danger'> Something went wrong. </Alert>;
 
     return (
@@ -20,14 +21,14 @@ const WeatherNow = () => {
                 <Card>
                     <Card.Body>
                         <Card.Title>Current weather</Card.Title>
-                        <Card.Subtitle className="mb-2 text-muted">{data?.LocalObservationDateTime}</Card.Subtitle>
+                        <Card.Subtitle className="mb-2 text-muted">{formatInTimeZone(data.LocalObservationDateTime, selectedLocation.TimeZone.Name, 'EEEE, LLL do HH:mm')}</Card.Subtitle>
                         <Row className='forecast-container'>
                             <Col className='weather-icon-container'>
-                                <WeatherIcon className='weather-icon' imageIndex={data?.WeatherIcon} />
+                                <WeatherIcon className='weather-icon' imageIndex={data.WeatherIcon} />
                             </Col>
                             <Col className='weather-conditions text-center my-auto'>
-                                <div className='weather-text'> {data?.WeatherText}</div>
-                                <div className='weather-temperature'>{data?.Temperature.Metric.Value} {data?.Temperature.Metric.Unit}</div>
+                                <div className='weather-text'> {data.WeatherText}</div>
+                                <div className='weather-temperature'>{data.Temperature.Metric.Value} {data.Temperature.Metric.Unit}</div>
                             </Col>
                         </Row>
                     </Card.Body>
