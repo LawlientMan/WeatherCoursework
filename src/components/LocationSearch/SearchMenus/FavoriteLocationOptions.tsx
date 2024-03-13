@@ -14,7 +14,7 @@ const FavoriteLocationOptions = ({ activeOption, onLocationSelected }: InputProp
 
     return (
         <ListGroup>
-            <ListGroup.Item variant="info">Favorites:</ListGroup.Item>
+            <ListGroup.Item variant="info">Favorites: {favoriteLocations.length == 0 && "still empty"}</ListGroup.Item>
             {favoriteLocations.map((location, index) => {
                 return (
                     <LocationSearchItem

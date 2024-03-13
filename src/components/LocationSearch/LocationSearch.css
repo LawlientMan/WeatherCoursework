@@ -10,7 +10,13 @@
     width: 100%;
     overflow: auto;
     z-index: 100;
-    /* border-bottom: var(--bs-border-width) solid var(--bs-border-color); */
+    border: var(--bs-border-width) solid var(--bs-border-color);
+}
+
+.location-search .menu .list-group-item {
+    border-radius: unset;
+    border-right: none;
+    border-left: none;
 }
 
 .search {

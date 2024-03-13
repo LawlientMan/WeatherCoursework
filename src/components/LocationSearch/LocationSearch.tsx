@@ -93,17 +93,20 @@ const LocationSearch = ({ }: LocationSearchProps) => {
                                 </ListGroup.Item>
                             </ListGroup>
                             : <>
-                                {showLocationSearchOptions && data &&
-                                    <>
-                                        <LocationSearchItemsList
-                                            locations={data}
-                                            activeOption={activeOption}
-                                            onLocationSelected={handleLocationSelect}
-                                        />
+                                {searchText
+                                    ? (
+                                        <>
+                                            {showLocationSearchOptions && data && <LocationSearchItemsList
+                                                locations={data}
+                                                activeOption={activeOption}
+                                                onLocationSelected={handleLocationSelect} />}
+                                        </>
+                                    )
+                                    : (
                                         <FavoriteLocationOptions
                                             activeOption={activeOption}
                                             onLocationSelected={handleLocationSelect} />
-                                    </>
+                                    )
                                 }
                             </>
                         }
