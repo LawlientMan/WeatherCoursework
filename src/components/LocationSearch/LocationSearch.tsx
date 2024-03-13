@@ -8,13 +8,15 @@ import LocationSearchInput from '@/components/LocationSearch/LocationSearchInput
 import LocationSearchItemsList from '@/components/LocationSearch/LocationOptions';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { useListKeyboardNavigation } from '@/components/LocationSearch/useListKeyboardNavigation';
+import store, { IRootState } from '@/store';
+import { locationsSlice } from '@/features/locations/locationSlice';
+import { useSelector } from 'react-redux';
 
 interface LocationSearchProps {
-    selectedLocation: Location | null;
-    onLocationSelected: (location: Location) => void;
 }
 
-const LocationSearch = ({ onLocationSelected, selectedLocation }: LocationSearchProps) => {
+const LocationSearch = ( {}: LocationSearchProps) => {
+    const selectedLocation = useSelector((state: IRootState) => state.locations.selectedLocation);
     const [menuOpen, setMenuOpen] = useState(false);
 
     const [searchText, setSearchText] = useState('');
@@ -38,6 +40,10 @@ const LocationSearch = ({ onLocationSelected, selectedLocation }: LocationSearch
     const inputPlaceHolder = selectedLocation && !menuOpen ? `${selectedLocation.Country.EnglishName} ${selectedLocation.EnglishName}` : "Let's find a city";
     const [onKeyDown, activeOption, resetActiveOption] = useListKeyboardNavigation(menuOpen && showLocationSearchOptions && data ? data.length : null);
 
+    const setSelectedLocation = (location: Location) => {
+        store.dispatch(locationsSlice.actions.setCurrentLocation(location))
+    }
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
@@ -48,7 +54,7 @@ const LocationSearch = ({ onLocationSelected, selectedLocation }: LocationSearch
         }
         else if (data) {
             resetState();
-            onLocationSelected(data[activeOption]);
+            setSelectedLocation(data[activeOption]);
 
             if (document.activeElement instanceof HTMLElement) {
                 document.activeElement.blur();
@@ -59,7 +65,7 @@ const LocationSearch = ({ onLocationSelected, selectedLocation }: LocationSearch
 
     const handleLocationSelect = (location: Location) => {
         resetState();
-        onLocationSelected(location);
+        setSelectedLocation(location);
     }
 
     return (

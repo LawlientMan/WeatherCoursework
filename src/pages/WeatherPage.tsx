@@ -20,11 +20,6 @@ const WeatherPage = () => {
     const selectedLocation = useSelector((state: IRootState) => state.locations.selectedLocation);
     const [viewMode, setViewMode] = useState(ViewMode.Now);
 
-    const handleLocationSelection = (location: Location) => {
-        console.log(location);
-        store.dispatch(locationsSlice.actions.setCurrentLocation(location))
-    }
-
     const weatcherViewComponent = () => {
         switch (viewMode) {
             case ViewMode.Now: return <WeatherNow />;
@@ -39,7 +34,7 @@ const WeatherPage = () => {
             <SEO title="Weather Page" description="This is the weather page of weather website." />
             <Row>
                 <Col xl={4} md={6} xs={12} className="mb-3">
-                    <LocationSearch onLocationSelected={handleLocationSelection} selectedLocation={selectedLocation} />
+                    <LocationSearch />
                 </Col>
                 
                 {selectedLocation &&

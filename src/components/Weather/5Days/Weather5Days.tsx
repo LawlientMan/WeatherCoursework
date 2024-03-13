@@ -16,7 +16,6 @@ const Weather5Days = () => {
 
     return (
         <>
-
             {data.DailyForecasts.map((record) => (
                 <Col key={record.Date} className="mb-3" xs={12} md={6} xxl>
                     <Card className='h-100'>
