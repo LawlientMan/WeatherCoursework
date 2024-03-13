@@ -30,3 +30,10 @@ const FavoriteLocationOptions = ({ activeOption, onLocationSelected }: InputProp
 }
 
 export default FavoriteLocationOptions
+
+{/* <Row>
+                <Col xs="auto">sdsds</Col>
+                <Col>
+                    {location.Country.EnglishName}, {location.AdministrativeArea.EnglishName}, {location.EnglishName}
+                </Col>
+            </Row> */}

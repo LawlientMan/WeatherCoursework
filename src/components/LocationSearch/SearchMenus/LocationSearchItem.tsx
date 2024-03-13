@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { ListGroup } from 'react-bootstrap';
+import { Col, ListGroup, Row } from 'react-bootstrap';
 import { Location } from '@/shared/types/Location';
 
 interface InputProps {

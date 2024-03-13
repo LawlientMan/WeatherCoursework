@@ -28,6 +28,13 @@ export const locationsSlice = createSlice({
                 state.favoriteLocations = resultCollection;
                 setFavorites(state.favoriteLocations);
             }
+        },
+        deleteFavoriteLocation(state, action: PayloadAction<Location>) {
+            const resultCollection = state.favoriteLocations
+                .filter(el => el.Key !== action.payload.Key);
+
+            state.favoriteLocations = resultCollection;
+            setFavorites(state.favoriteLocations);
         }
     },
 });

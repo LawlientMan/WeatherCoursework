@@ -38,7 +38,6 @@ const LocationSearch = ({ }: LocationSearchProps) => {
     }
 
     const searchElementRef = useOutsideClick(handleOutsideClick);
-    const inputPlaceHolder = selectedLocation && !menuOpen ? `${selectedLocation.Country.EnglishName} ${selectedLocation.EnglishName}` : "Let's find a city";
     const [onKeyDown, activeOption, resetActiveOption] = useListKeyboardNavigation(menuOpen && showLocationSearchOptions && data ? data.length : null);
 
     const setSelectedLocation = (location: Location) => {
@@ -79,7 +78,7 @@ const LocationSearch = ({ }: LocationSearchProps) => {
             >
                 <LocationSearchInput
                     isLoading={isFetching}
-                    placeholder={inputPlaceHolder}
+                    isMenuOpen={menuOpen}
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
                     onClick={() => setMenuOpen(true)}
