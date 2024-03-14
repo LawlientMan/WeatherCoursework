@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { Col, ListGroup, Row } from 'react-bootstrap';
+import { ListGroup } from 'react-bootstrap';
 import { Location } from '@/shared/types/Location';
 
 interface InputProps {
@@ -9,10 +9,10 @@ interface InputProps {
 }
 
 const LocationSearchItem = ({ location, isActive, onLocationSelected }: InputProps) => {
-    const ref = useRef<HTMLElement>();
+    const ref = useRef<HTMLAnchorElement>(null);
 
     useEffect(() => {
-        if (isActive) {
+        if (isActive && ref && ref.current) {
             ref.current?.scrollIntoView({ block: "nearest" });
         }
     }, [isActive]);

@@ -5,13 +5,13 @@ import { Form, ListGroup } from 'react-bootstrap';
 
 import "@/components/LocationSearch/LocationSearch.css";
 import LocationSearchInput from '@/components/LocationSearch/LocationSearchInput';
-import LocationSearchItemsList from '@/components/LocationSearch/SearchMenus/LocationOptions';
+import LocationSearchItemsList from '@/components/LocationSearch/SearchMenu/SearchLocationOptions';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { useListKeyboardNavigation } from '@/components/LocationSearch/useListKeyboardNavigation';
 import store, { IRootState } from '@/store';
 import { locationsSlice } from '@/features/locations/locationSlice';
 import { useSelector } from 'react-redux';
-import FavoriteLocationOptions from '@/components/LocationSearch/SearchMenus/FavoriteLocationOptions';
+import FavoriteLocationOptions from '@/components/LocationSearch/SavedSearchMenu/SavedLocationOptions';
 
 interface LocationSearchProps {
 }
@@ -34,6 +34,7 @@ const LocationSearch = ({ }: LocationSearchProps) => {
     }
 
     const handleOutsideClick = () => {
+        console.log("handleOutsideClick");
         resetState();
     }
 
@@ -42,6 +43,7 @@ const LocationSearch = ({ }: LocationSearchProps) => {
 
     const setSelectedLocation = (location: Location) => {
         store.dispatch(locationsSlice.actions.setCurrentLocation(location))
+        store.dispatch(locationsSlice.actions.setRecentLocation(location))
     }
 
     const handleSubmit = (e: React.FormEvent) => {

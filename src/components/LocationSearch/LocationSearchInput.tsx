@@ -39,10 +39,10 @@ const LocationSearchInput = (props: InputProps) => {
                 </button>
             }
             <div onClick={onClick}>
-                <Form.Control
-                    className={showFavoriteButton ? 'search-input location-selected' : 'search-input'}
-                    type="search"
+                <input
+                    className={showFavoriteButton ? 'form-control search-input location-selected' : ' form-control search-input'}
                     placeholder = {inputPlaceHolder}
+                    type="search"
                     {...rest}
                 />
                 <div className='search-buttons'>

@@ -12,7 +12,6 @@ export const weatherApi = createApi({
     endpoints: (builder) => ({
         get5DaysWeather: builder.query<WeatherDaily, string>({
             query: (locationKey) => {
-                console.log('run weather 5day search :' + locationKey)
                 return {
                     url: `/forecasts/v1/daily/5day/${locationKey}/`,
                     params: { 
@@ -24,7 +23,6 @@ export const weatherApi = createApi({
         getCurrentWeather: builder.query<CurrentConditions, string>({
             transformResponse: (response: CurrentConditions[], _meta, _arg) => response[0],
             query: (locationKey) => {
-                console.log('run weather CurrentConditions search :' + locationKey)
                 return {
                     url: `/currentconditions/v1/${locationKey}/`,
                     params: { 
@@ -35,7 +33,6 @@ export const weatherApi = createApi({
         }),
         getHourlyWeather: builder.query<HourlyWeather[], string>({
             query: (locationKey) => {
-                console.log('run weather hourly search :' + locationKey)
                 return {
                     url: `forecasts/v1/hourly/12hour/${locationKey}/`,
                     params: { 
