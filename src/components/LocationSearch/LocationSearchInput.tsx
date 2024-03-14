@@ -1,3 +1,4 @@
+import FavoriteStarImg from '@/components/common/FavoriteStarImg';
 import { locationsSlice } from '@/features/locations/locationSlice';
 import store, { IRootState } from '@/store';
 import React from 'react'
@@ -35,7 +36,7 @@ const LocationSearchInput = (props: InputProps) => {
         <Form.Group className="search">
             {selectedLocation && !isMenuOpen &&
                 <button className='favorite-button' type='button' onClick={handleFavoriteButtonClick}>
-                    <img src={isSelectedLocationFavorite ? "/src/assets/icons/star.svg" : "/src/assets/icons/star-gray.svg"} alt="favorite" />
+                    <FavoriteStarImg isActive={isSelectedLocationFavorite}/>
                 </button>
             }
             <div onClick={onClick}>

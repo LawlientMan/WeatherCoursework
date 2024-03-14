@@ -13,7 +13,7 @@ const Weather5Days = () => {
 
     if(!selectedLocation) return;
     if (isFetching) return <Weather5DaysSkeleton/>;
-    if (error || !data) return <Alert variant='danger'> Something went wrong. </Alert>;
+    if (error || !data) return <Col><Alert variant='danger'> Something went wrong. </Alert></Col>;
 
     return (
         <>

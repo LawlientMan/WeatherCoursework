@@ -14,7 +14,7 @@ const WeatherNow = () => {
 
     if (!selectedLocation) return;
     if (isFetching) return <WeatherNowSkeleton />;
-    if (error || !data) return <Alert variant='danger'> Something went wrong. </Alert>;
+    if (error || !data) return <Col><Alert variant='danger'> Something went wrong. </Alert></Col>;
 
     return (
         <>

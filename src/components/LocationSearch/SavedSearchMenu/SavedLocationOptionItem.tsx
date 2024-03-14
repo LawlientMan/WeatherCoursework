@@ -3,6 +3,7 @@ import { Col, ListGroup, Row } from 'react-bootstrap';
 import { Location } from '@/shared/types/Location';
 import store from '@/store';
 import { locationsSlice } from '@/features/locations/locationSlice';
+import FavoriteStarImg from '@/components/common/FavoriteStarImg';
 
 interface InputProps {
     location: Location;
@@ -44,7 +45,7 @@ const LocationSavedItem = ({ location, isActive, isInFavorite, onLocationSelecte
             <Row>
                 <Col xs="auto" className='p-0'>
                     <button className='list-favorite-button p-0' onClick={handleFavoriteButtonClick}>
-                        <img src={isInFavorite ? "/src/assets/icons/star.svg" : "/src/assets/icons/star-gray.svg"} alt="favorite" />
+                        <FavoriteStarImg isActive={isInFavorite}/>
                     </button>
                 </Col>
                 <Col onClick={handleOnClick}>
