@@ -1,5 +1,5 @@
 import { preferencesSlice } from '@/features/preferences/preferencesSlice';
-import store, { IRootState } from '@/store';
+import store, { IRootState } from '@/config/store';
 import { useSelector } from 'react-redux';
 import { Form } from 'react-bootstrap';
 
@@ -38,7 +38,6 @@ const TemperatureUnitSelector = () => {
                     checked={unit === Units.F}
                 />
             </Form>
-
         </div>
     )
 }

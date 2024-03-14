@@ -2,7 +2,7 @@ import WeatherHourlySkeleton from '@/components/Weather/Hourly/WeatherHourlySkel
 import Temperature from '@/components/Weather/common/Temperature';
 import WeatherIcon from '@/components/Weather/common/WeatherIcon';
 import { useGetHourlyWeatherQuery } from '@/features/weather/weatherApi';
-import { IRootState } from '@/store';
+import { IRootState } from '@/config/store';
 import { formatInTimeZone } from 'date-fns-tz';
 import { Alert, Card, Col } from 'react-bootstrap';
 import { useSelector } from 'react-redux';

@@ -1,6 +1,6 @@
 import FavoriteStarImg from '@/components/common/FavoriteStarImg';
 import { locationsSlice } from '@/features/locations/locationSlice';
-import store, { IRootState } from '@/store';
+import store, { IRootState } from '@/config/store';
 import React from 'react'
 import { Form, Spinner } from 'react-bootstrap'
 import { useSelector } from 'react-redux';

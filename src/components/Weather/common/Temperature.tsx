@@ -1,4 +1,4 @@
-import { IRootState } from '@/store';
+import { IRootState } from '@/config/store';
 import { useSelector } from 'react-redux';
 
 interface InputProps {

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { Col, ListGroup, Row } from 'react-bootstrap';
 import { Location } from '@/shared/types/Location';
-import store from '@/store';
+import store from '@/config/store';
 import { locationsSlice } from '@/features/locations/locationSlice';
 import FavoriteStarImg from '@/components/common/FavoriteStarImg';
 

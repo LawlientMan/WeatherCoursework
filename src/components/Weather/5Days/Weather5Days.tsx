@@ -2,7 +2,7 @@ import Weather5DaysSkeleton from '@/components/Weather/5Days/Weather5DaysSkeleto
 import Temperature from '@/components/Weather/common/Temperature';
 import WeatherIcon from '@/components/Weather/common/WeatherIcon';
 import { useGet5DaysWeatherQuery } from '@/features/weather/weatherApi';
-import { IRootState } from '@/store';
+import { IRootState } from '@/config/store';
 import { formatInTimeZone } from 'date-fns-tz';
 import { Alert, Card, Col, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';

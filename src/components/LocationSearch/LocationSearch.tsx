@@ -8,7 +8,7 @@ import LocationSearchInput from '@/components/LocationSearch/LocationSearchInput
 import LocationSearchItemsList from '@/components/LocationSearch/SearchMenu/SearchLocationOptions';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { useListKeyboardNavigation } from '@/components/LocationSearch/useListKeyboardNavigation';
-import store, { IRootState } from '@/store';
+import store, { IRootState } from '@/config/store';
 import { locationsSlice } from '@/features/locations/locationSlice';
 import { useSelector } from 'react-redux';
 import FavoriteLocationOptions from '@/components/LocationSearch/SavedSearchMenu/SavedLocationOptions';
@@ -17,7 +17,6 @@ interface LocationSearchProps {
 }
 
 const LocationSearch = ({ }: LocationSearchProps) => {
-    const selectedLocation = useSelector((state: IRootState) => state.locations.selectedLocation);
     const [menuOpen, setMenuOpen] = useState(false);
 
     const [searchText, setSearchText] = useState('');

@@ -1,6 +1,6 @@
 import WeatherIcon from '@/components/Weather/common/WeatherIcon';
 import { useGetCurrentWeatherQuery } from '@/features/weather/weatherApi';
-import { IRootState } from '@/store';
+import { IRootState } from '@/config/store';
 import { Alert, Card, Col, Row } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import '@/components/Weather/Now/WeatherNow.css'

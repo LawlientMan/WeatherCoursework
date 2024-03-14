@@ -1,7 +1,7 @@
 import LocationSearch from "@/components/LocationSearch/LocationSearch"
 import SEO from "@/components/SEO/SEO"
 import WeatherNow from "@/components/Weather/Now/WeatherNow"
-import { IRootState } from "@/store"
+import { IRootState } from "@/config/store"
 import { useState } from "react"
 import { Col, Row, ToggleButton, ToggleButtonGroup } from "react-bootstrap"
 import { useSelector } from "react-redux"

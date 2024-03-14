@@ -1,5 +1,5 @@
 import LocationSearchItem from '@/components/LocationSearch/SearchMenu/SearchLocationOptionItem';
-import { IRootState } from '@/store';
+import { IRootState } from '@/config/store';
 import { ListGroup } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Location } from '@/shared/types/Location';

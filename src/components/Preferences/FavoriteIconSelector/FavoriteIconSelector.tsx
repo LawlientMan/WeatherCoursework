@@ -1,6 +1,6 @@
 import FavoriteStarImg from '@/components/common/FavoriteStarImg';
 import { preferencesSlice, AvailableFavoriteIcons } from '@/features/preferences/preferencesSlice';
-import store, { IRootState } from '@/store';
+import store, { IRootState } from '@/config/store';
 import { useSelector } from 'react-redux';
 import styles from "@/components/Preferences/FavoriteIconSelector/FavoriteIconSelector.module.css";
 
