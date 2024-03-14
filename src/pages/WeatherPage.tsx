@@ -1,9 +1,7 @@
 import LocationSearch from "@/components/LocationSearch/LocationSearch"
 import SEO from "@/components/SEO/SEO"
 import WeatherNow from "@/components/Weather/Now/WeatherNow"
-import { locationsSlice } from "@/features/locations/locationSlice"
-import { Location } from "@/shared/types/Location"
-import store, { IRootState } from "@/store"
+import { IRootState } from "@/store"
 import { useState } from "react"
 import { Col, Row, ToggleButton, ToggleButtonGroup } from "react-bootstrap"
 import { useSelector } from "react-redux"
@@ -36,11 +34,11 @@ const WeatherPage = () => {
                 <Col xl={4} md={6} xs={12} className="mb-3">
                     <LocationSearch />
                 </Col>
-                
+
                 {selectedLocation &&
                     <>
-                        <Col className="mb-3">
-                            <ToggleButtonGroup type="radio" name="options" value={viewMode} onChange={setViewMode}>
+                        <Col xl={4} md={6} xs={12} className="mb-3">
+                            <ToggleButtonGroup className="w-100" type="radio" name="options" value={viewMode} onChange={setViewMode}>
                                 <ToggleButton className="toggle-mode" id="tbg-now" variant="outline-primary" value={ViewMode.Now}>
                                     Now
                                 </ToggleButton>

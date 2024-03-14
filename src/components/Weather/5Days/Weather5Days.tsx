@@ -1,4 +1,5 @@
 import Weather5DaysSkeleton from '@/components/Weather/5Days/Weather5DaysSkeleton';
+import Temperature from '@/components/Weather/common/Temperature';
 import WeatherIcon from '@/components/Weather/common/WeatherIcon';
 import { useGet5DaysWeatherQuery } from '@/features/weather/weatherApi';
 import { IRootState } from '@/store';
@@ -21,7 +22,11 @@ const Weather5Days = () => {
                     <Card className='h-100'>
                         <Card.Body>
                             <Card.Title>{formatInTimeZone(record.Date, selectedLocation.TimeZone.Name, 'EEEE, LLL do')}</Card.Title>
-                            <Card.Subtitle className="text-muted mb-3">{record.Temperature.Maximum.Value}{record.Temperature.Maximum.Unit} / {record.Temperature.Minimum.Value}{record.Temperature.Minimum.Unit}</Card.Subtitle>
+                            <Card.Subtitle className="text-muted mb-3">
+                                <Temperature unit={record.Temperature.Maximum.Unit} value={record.Temperature.Maximum.Value} />
+                                {' / '}
+                                <Temperature unit={record.Temperature.Minimum.Unit} value={record.Temperature.Minimum.Value} />
+                                </Card.Subtitle>
                             <Row>
                                 <Col>
                                     <div className='text-center mb-2'><b>Day</b></div>

@@ -6,12 +6,13 @@ import { useSelector } from 'react-redux';
 import '@/components/Weather/Now/WeatherNow.css'
 import WeatherNowSkeleton from '@/components/Weather/Now/WeatherNowSkeleton';
 import { formatInTimeZone } from 'date-fns-tz';
+import Temperature from '@/components/Weather/common/Temperature';
 
 const WeatherNow = () => {
     const selectedLocation = useSelector((state: IRootState) => state.locations.selectedLocation);
     const { data, error, isFetching } = useGetCurrentWeatherQuery(selectedLocation?.Key || '', { skip: !selectedLocation })
 
-    if(!selectedLocation) return;
+    if (!selectedLocation) return;
     if (isFetching) return <WeatherNowSkeleton />;
     if (error || !data) return <Alert variant='danger'> Something went wrong. </Alert>;
 
@@ -28,7 +29,9 @@ const WeatherNow = () => {
                             </Col>
                             <Col className='weather-conditions text-center my-auto'>
                                 <div className='weather-text'> {data.WeatherText}</div>
-                                <div className='weather-temperature'>{data.Temperature.Metric.Value} {data.Temperature.Metric.Unit}</div>
+                                <div className='weather-temperature'>
+                                    <Temperature unit={data.Temperature.Metric.Unit} value={data.Temperature.Metric.Value} />
+                                </div>
                             </Col>
                         </Row>
                     </Card.Body>
