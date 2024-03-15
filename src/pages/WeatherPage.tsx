@@ -18,7 +18,7 @@ const WeatherPage = () => {
     const selectedLocation = useSelector((state: IRootState) => state.locations.selectedLocation);
     const [viewMode, setViewMode] = useState(ViewMode.Now);
 
-    
+
 
     const weatcherViewComponent = () => {
         switch (viewMode) {
@@ -31,7 +31,7 @@ const WeatherPage = () => {
 
     return (
         <>
-            <SEO title="Weather Page" description="This is the weather page of weather website." />
+            <SEO title="Goose weather" description="This is the weather page of goose weather website." />
             <Row>
                 <Col xl={4} md={6} xs={12} className="mb-3">
                     <LocationSearch />

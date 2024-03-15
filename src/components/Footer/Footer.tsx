@@ -6,7 +6,7 @@ const Footer = () => {
         <footer className={styles.footer}>
             <div className='border-top mt-2 pt-2 pb-2'>
                 <Container fluid='lg'>
-                    <p className="text-center text-muted m-0">© 2024 Weather React App. All rights reserved.</p>
+                    <p className="text-center text-muted m-0">© 2024 Goose Weather React App. All rights reserved.</p>
                 </Container>
             </div>
         </footer>
