@@ -1,17 +1,19 @@
-import { useGetLocationsQuery } from '@/features/locations/locationsApi'
+import { locationsApi, useGetLocationsQuery } from '@/features/locations/locationsApi'
 import { Location } from '@/shared/types/Location';
-import React, { useState } from 'react'
+import React, { MutableRefObject, useState } from 'react'
 import { Form, ListGroup } from 'react-bootstrap';
 
 import "@/components/LocationSearch/LocationSearch.css";
 import LocationSearchInput from '@/components/LocationSearch/LocationSearchInput';
 import LocationSearchItemsList from '@/components/LocationSearch/SearchMenu/SearchLocationOptions';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
-import { useListKeyboardNavigation } from '@/components/LocationSearch/useListKeyboardNavigation';
+import { useListKeyboardNavigation } from '@/components/LocationSearch/hooks/useListKeyboardNavigation';
 import store, { IRootState } from '@/config/store';
-import { locationsSlice } from '@/features/locations/locationSlice';
-import { useSelector } from 'react-redux';
+import { locationsSlice, setCurrentLocation } from '@/features/locations/locationSlice';
+import { useSelector, useDispatch } from 'react-redux';
 import FavoriteLocationOptions from '@/components/LocationSearch/SavedSearchMenu/SavedLocationOptions';
+import { useNavigate } from 'react-router-dom';
+
 
 interface LocationSearchProps {
 }
@@ -21,10 +23,18 @@ const LocationSearch = ({ }: LocationSearchProps) => {
 
     const [searchText, setSearchText] = useState('');
     const [lastRunSearchText, setLastRunSearchText] = useState('');
+    
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const showLocationSearchOptions = searchText && searchText == lastRunSearchText;
     const { data, error, isFetching } = useGetLocationsQuery(lastRunSearchText, { skip: !showLocationSearchOptions })
 
+    // locationsApi.endpoints.getLocations.select
+    // move logic from several use state to useReducer 
+    // move logic with fetching data to this component
+    // !!! do not use store as a global object, export actions or use dispatch
+    
     const resetState = () => {
         setMenuOpen(false);
         setSearchText('');
@@ -37,12 +47,14 @@ const LocationSearch = ({ }: LocationSearchProps) => {
         resetState();
     }
 
-    const searchElementRef = useOutsideClick(handleOutsideClick);
+    const searchElementRef = useOutsideClick(handleOutsideClick) as (MutableRefObject<HTMLFormElement | null>);
     const [onKeyDown, activeOption, resetActiveOption] = useListKeyboardNavigation(menuOpen && showLocationSearchOptions && data ? data.length : null);
 
     const setSelectedLocation = (location: Location) => {
-        store.dispatch(locationsSlice.actions.setCurrentLocation(location))
+        dispatch(setCurrentLocation(location));
+        // store.dispatch(locationsSlice.actions.setCurrentLocation(location))
         store.dispatch(locationsSlice.actions.setRecentLocation(location))
+        navigate(`/weather/${location.Key}`);
     }
 
     const handleSubmit = (e: React.FormEvent) => {

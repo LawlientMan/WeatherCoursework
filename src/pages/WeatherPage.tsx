@@ -18,6 +18,8 @@ const WeatherPage = () => {
     const selectedLocation = useSelector((state: IRootState) => state.locations.selectedLocation);
     const [viewMode, setViewMode] = useState(ViewMode.Now);
 
+    
+
     const weatcherViewComponent = () => {
         switch (viewMode) {
             case ViewMode.Now: return <WeatherNow />;

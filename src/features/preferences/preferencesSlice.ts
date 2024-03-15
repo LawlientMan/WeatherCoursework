@@ -1,21 +1,20 @@
+import { appConfig } from "@/config/appConfig";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-export const AvailableFavoriteIcons = ['duckStar', 'star'];
 interface PreferencesState {
     temperatureUnit: string,
     favoriteIcon: string,
 }
 
-const getTemperatureUnit = (): string => localStorage.getItem("preferences.temperature.unit") || 'C';
+const getTemperatureUnit = () => localStorage.getItem("preferences.temperature.unit") || '';
 const setTemperatureUnitToStorage = (value: string) => localStorage.setItem("preferences.temperature.unit", value);
 
-const getFavoriteIcon = (): string => localStorage.getItem("preferences.favorite.icon") || '';
+const getFavoriteIcon = () => localStorage.getItem("preferences.favorite.icon") || '';
 const setFavoriteIconToStorage = (value: string) => localStorage.setItem("preferences.favorite.icon", value);
 
-
 const initialState: PreferencesState = {
-    temperatureUnit: getTemperatureUnit(),
-    favoriteIcon:  AvailableFavoriteIcons.includes(getFavoriteIcon()) ? getFavoriteIcon() : AvailableFavoriteIcons[0]
+    temperatureUnit: appConfig.supportedTemperatureUnits.some(i => i.unit === getTemperatureUnit()) ? getTemperatureUnit() : appConfig.supportedTemperatureUnits[0].unit,
+    favoriteIcon:  appConfig.supportedFavoriteIcons.includes(getFavoriteIcon()) ? getFavoriteIcon() : appConfig.supportedFavoriteIcons[0]
 }
 
 export const preferencesSlice = createSlice({

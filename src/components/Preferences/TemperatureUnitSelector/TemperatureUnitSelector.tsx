@@ -2,16 +2,12 @@ import { preferencesSlice } from '@/features/preferences/preferencesSlice';
 import store, { IRootState } from '@/config/store';
 import { useSelector } from 'react-redux';
 import { Form } from 'react-bootstrap';
-
-enum Units {
-    C = "C",
-    F = "F"
-}
+import { appConfig } from '@/config/appConfig';
 
 const TemperatureUnitSelector = () => {
     const unit = useSelector((state: IRootState) => state.preferences.temperatureUnit);
 
-    const setUnit = (value: Units) => {
+    const setUnit = (value: string) => {
         store.dispatch(preferencesSlice.actions.setTemperatureUnit(value))
     }
 
@@ -19,24 +15,18 @@ const TemperatureUnitSelector = () => {
         <div className='mb-3'>
             <p>Temperature Units:</p>
             <Form>
-                <Form.Check
-                    className='mb-2'
-                    type='radio'
-                    label='Celsius (C)'
-                    id='temperature-C'
-                    name="group1"
-                    onChange={() => setUnit(Units.C)}
-                    checked={unit === Units.C}
-                />
-
-                <Form.Check
-                    type='radio'
-                    label='Fahrenheit (F)'
-                    id='temperature-F'
-                    name="group1"
-                    onChange={() => setUnit(Units.F)}
-                    checked={unit === Units.F}
-                />
+                {appConfig.supportedTemperatureUnits.map(i => (
+                    <Form.Check
+                        key={i.unit}
+                        className='mb-2'
+                        type='radio'
+                        label={`${i.displayName} (${i.unit})`}
+                        id={i.unit}
+                        name="temperature-group"
+                        onChange={() => setUnit(i.unit)}
+                        checked={unit === i.unit}
+                    />
+                ))}
             </Form>
         </div>
     )
