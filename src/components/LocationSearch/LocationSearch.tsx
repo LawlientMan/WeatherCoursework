@@ -25,7 +25,6 @@ const LocationSearch = ({ }: LocationSearchProps) => {
     const [lastRunSearchText, setLastRunSearchText] = useState('');
     
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
     const showLocationSearchOptions = searchText && searchText == lastRunSearchText;
     const { data, error, isFetching } = useGetLocationsQuery(lastRunSearchText, { skip: !showLocationSearchOptions })
@@ -43,7 +42,7 @@ const LocationSearch = ({ }: LocationSearchProps) => {
     }
 
     const handleOutsideClick = () => {
-        console.log("handleOutsideClick");
+        // console.log("handleOutsideClick");
         resetState();
     }
 
@@ -52,9 +51,7 @@ const LocationSearch = ({ }: LocationSearchProps) => {
 
     const setSelectedLocation = (location: Location) => {
         dispatch(setCurrentLocation(location));
-        // store.dispatch(locationsSlice.actions.setCurrentLocation(location))
         store.dispatch(locationsSlice.actions.setRecentLocation(location))
-        navigate(`/weather/${location.Key}`);
     }
 
     const handleSubmit = (e: React.FormEvent) => {

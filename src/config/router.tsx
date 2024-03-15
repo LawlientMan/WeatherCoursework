@@ -13,6 +13,7 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "/about", element: <AboutPage /> },
       { path: "/weather/:locationKey?", element: <WeatherPage /> },
+      { path: "/weather/:locationKey/:viewmode?", element: <WeatherPage /> },
       // { path: "*", element: <NotFoundPage /> },
     ],
   },
