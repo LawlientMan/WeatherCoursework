@@ -1,7 +1,7 @@
 import { IRootState } from '@/config/store';
 import { setCurrentLocation } from '@/features/locations/locationSlice';
-import { useGetLocationByKeyQuery, useLazyGetLocationByKeyQuery } from '@/features/locations/locationsApi';
-import { useEffect, useState } from 'react';
+import { useLazyGetLocationByKeyQuery } from '@/features/locations/locationsApi';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 

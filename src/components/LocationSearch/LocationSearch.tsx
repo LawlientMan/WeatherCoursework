@@ -13,25 +13,29 @@ import { locationsSlice, setCurrentLocation } from '@/features/locations/locatio
 import { useSelector, useDispatch } from 'react-redux';
 import FavoriteLocationOptions from '@/components/LocationSearch/SavedSearchMenu/SavedLocationOptions';
 import { useNavigate } from 'react-router-dom';
+import ErrorSearchMenu from '@/components/LocationSearch/components/ErrorSearchMenu';
 
 
 interface LocationSearchProps {
 }
 
 const LocationSearch = ({ }: LocationSearchProps) => {
-    const [menuOpen, setMenuOpen] = useState(false);
+    const dispatch = useDispatch();
 
+    const [menuOpen, setMenuOpen] = useState(false);
     const [searchText, setSearchText] = useState('');
     const [lastRunSearchText, setLastRunSearchText] = useState('');
     
-    const dispatch = useDispatch();
-
     const showLocationSearchOptions = searchText && searchText == lastRunSearchText;
-    const { data, error, isFetching } = useGetLocationsQuery(lastRunSearchText, { skip: !showLocationSearchOptions })
 
-    // locationsApi.endpoints.getLocations.select
+    const { data, error, isFetching } = useGetLocationsQuery(lastRunSearchText, { skip: !showLocationSearchOptions })
+    const favoriteLocations = useSelector((state: IRootState) => state.locations.favoriteLocations);
+    const recentLocations = useSelector((state: IRootState) => state.locations.recentLocations);
+
+    const recentLocationsWithoutFavorites = recentLocations
+        .filter(el => !favoriteLocations.find(f => f.Key === el.Key ));
+
     // move logic from several use state to useReducer 
-    // move logic with fetching data to this component
     // !!! do not use store as a global object, export actions or use dispatch
     
     const resetState = () => {
@@ -42,7 +46,6 @@ const LocationSearch = ({ }: LocationSearchProps) => {
     }
 
     const handleOutsideClick = () => {
-        // console.log("handleOutsideClick");
         resetState();
     }
 
@@ -97,11 +100,7 @@ const LocationSearch = ({ }: LocationSearchProps) => {
                 {!isFetching && menuOpen &&
                     <div className='menu'>
                         {error
-                            ? <ListGroup>
-                                <ListGroup.Item variant='danger'>
-                                    Something went wrong.
-                                </ListGroup.Item>
-                            </ListGroup>
+                            ? <ErrorSearchMenu/>
                             : <>
                                 {searchText
                                     ? (
@@ -115,7 +114,10 @@ const LocationSearch = ({ }: LocationSearchProps) => {
                                     : (
                                         <FavoriteLocationOptions
                                             activeOption={activeOption}
-                                            onLocationSelected={handleLocationSelect} />
+                                            onLocationSelected={handleLocationSelect} 
+                                            favoriteLocations={favoriteLocations}
+                                            recentLocations={recentLocationsWithoutFavorites}
+                                            />
                                     )
                                 }
                             </>

@@ -1,21 +1,18 @@
-import LocationSearchItem from '@/components/LocationSearch/SearchMenu/SearchLocationOptionItem';
-import { IRootState } from '@/config/store';
 import { ListGroup } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
 import { Location } from '@/shared/types/Location';
 import LocationSavedItem from '@/components/LocationSearch/SavedSearchMenu/SavedLocationOptionItem';
 
 interface InputProps {
     activeOption: number;
     onLocationSelected: (location: Location) => void;
+    favoriteLocations: Location[];
+    recentLocations: Location[];
 }
 
-const FavoriteLocationOptions = ({ activeOption, onLocationSelected }: InputProps) => {
-    const favoriteLocations = useSelector((state: IRootState) => state.locations.favoriteLocations);
-    const recentLocations = useSelector((state: IRootState) => state.locations.recentLocations);
+const FavoriteLocationOptions = (
+    { activeOption, onLocationSelected, favoriteLocations, recentLocations }: InputProps) => {
 
-    const recentLocationsWithoutFavorites = recentLocations
-        .filter(el => !favoriteLocations.find(f => f.Key === el.Key ));
+
 
     return (
         <ListGroup>
@@ -32,15 +29,15 @@ const FavoriteLocationOptions = ({ activeOption, onLocationSelected }: InputProp
                 )
             })}
 
-            {recentLocationsWithoutFavorites.length > 0 &&
+            {recentLocations.length > 0 &&
                 <>
                     <ListGroup.Item variant="info">Recent:</ListGroup.Item>
-                    {recentLocationsWithoutFavorites.map((location, index) => {
+                    {recentLocations.map((location, index) => {
                         return (
                             <LocationSavedItem
                                 key={location.Key}
                                 location={location}
-                                isActive={index === activeOption}
+                                isActive={(favoriteLocations.length + index) === activeOption}
                                 isInFavorite={false}
                                 onLocationSelected={onLocationSelected}
                             />
