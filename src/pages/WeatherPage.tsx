@@ -4,11 +4,13 @@ import WeatherNow from "@/components/Weather/Now/WeatherNow"
 import { IRootState } from "@/config/store"
 import { useEffect, useState } from "react"
 import { Col, Row, ToggleButton, ToggleButtonGroup } from "react-bootstrap"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import Weather5Days from "@/components/Weather/5Days/Weather5Days"
 import WeatherHourly from "@/components/Weather/Hourly/WeatherHourly"
 import { useNavigate, useParams } from "react-router-dom"
-import { useInitialLoadOfLocationFromUrl } from "@/hooks/useInitialLoadOfLocationFromUrl"
+import { useInitialLoadOfLocationFromUrl } from "@/components/Weather/hooks/useInitialLoadOfLocationFromUrl"
+import { setCurrentLocation } from "@/features/locations/locationSlice"
+import { Location } from '@/shared/types/Location';
 
 enum ViewMode {
     Now = "now",
@@ -21,23 +23,27 @@ const isViewMode = (viewMode: string | undefined): boolean => {
 }
 
 const WeatherPage = () => {
-    const { viewmode } = useParams();
+    const { viewmode, locationKey } = useParams();
+
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [selectedViewMode, setSelectedViewMode] = useState(isViewMode(viewmode) ? viewmode : ViewMode.Now);
+    const [useInitialLoadData, setUseInitialLoadData] = useState(true);
 
     const selectedLocation = useSelector((state: IRootState) => state.locations.selectedLocation);
-    const { isFetching, error, isNotFound } = useInitialLoadOfLocationFromUrl()
+    const { isFetching, error, isNotFound } = useInitialLoadOfLocationFromUrl();
 
     useEffect(() => {
-        if(selectedLocation){
-            navigate(`/weather/${selectedLocation.Key}/${selectedViewMode}`);
+        if (!locationKey) {
+            dispatch(setCurrentLocation(null));
+            setUseInitialLoadData(false);
         }
-    }, [selectedViewMode, selectedLocation]);
+    }, [locationKey]);
 
-    if (isFetching) return 'Loading....';
-    if (error) return 'something gose wrong....';
-    if (isNotFound) return 'not found';
+    if (useInitialLoadData && isFetching) return 'Loading....';
+    if (useInitialLoadData && error) return 'something gose wrong....';
+    if (useInitialLoadData && isNotFound) return 'not found';
 
     const weatcherViewComponent = () => {
         switch (selectedViewMode) {
@@ -50,6 +56,14 @@ const WeatherPage = () => {
 
     function handleViewModeChange(value: ViewMode): void {
         setSelectedViewMode(value);
+        if (selectedLocation) {
+            navigate(`/weather/${selectedLocation.Key}/${value}`);
+        }
+    }
+
+    const handleLocationSelect = (location: Location) => {
+        dispatch(setCurrentLocation(location));
+        navigate(`/weather/${location.Key}/${selectedViewMode}`);
     }
 
     return (
@@ -57,7 +71,7 @@ const WeatherPage = () => {
             <SEO title="Goose weather" description="This is the weather page of goose weather website." />
             <Row>
                 <Col xl={4} md={6} xs={12} className="mb-3">
-                    <LocationSearch />
+                    <LocationSearch onLocationSelected={handleLocationSelect} />
                 </Col>
 
                 {selectedLocation &&

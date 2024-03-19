@@ -1,4 +1,5 @@
 import { appConfig } from "@/config/appConfig";
+import { LocalStorageGetString, LocalStorageSetItem } from "@/features/localStorage";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface PreferencesState {
@@ -6,15 +7,32 @@ interface PreferencesState {
     favoriteIcon: string,
 }
 
-const getTemperatureUnit = () => localStorage.getItem("preferences.temperature.unit") || '';
-const setTemperatureUnitToStorage = (value: string) => localStorage.setItem("preferences.temperature.unit", value);
+const temperatureUnitKey = "preferences.temperature.unit";
+const favoriteIconKey = "preferences.favorite.icon";
 
-const getFavoriteIcon = () => localStorage.getItem("preferences.favorite.icon") || '';
-const setFavoriteIconToStorage = (value: string) => localStorage.setItem("preferences.favorite.icon", value);
+const getTemperatureUnitInitValue = () => {
+    const localValue = LocalStorageGetString(temperatureUnitKey);
+    if (localValue) {
+        const foundValue = appConfig.supportedTemperatureUnits.find(i => i.unit === localValue);
+        if (foundValue)
+            return foundValue.unit;
+    }
+
+    return appConfig.supportedTemperatureUnits[0].unit;
+}
+
+const getFavoriteIconInitValue = () => {
+    const localValue = LocalStorageGetString(favoriteIconKey);
+    if (localValue && appConfig.supportedFavoriteIcons.includes(localValue)) {
+        return localValue;
+    }
+
+    return appConfig.supportedFavoriteIcons[0];
+}
 
 const initialState: PreferencesState = {
-    temperatureUnit: appConfig.supportedTemperatureUnits.some(i => i.unit === getTemperatureUnit()) ? getTemperatureUnit() : appConfig.supportedTemperatureUnits[0].unit,
-    favoriteIcon:  appConfig.supportedFavoriteIcons.includes(getFavoriteIcon()) ? getFavoriteIcon() : appConfig.supportedFavoriteIcons[0]
+    temperatureUnit: getTemperatureUnitInitValue(),
+    favoriteIcon: getFavoriteIconInitValue()
 }
 
 export const preferencesSlice = createSlice({
@@ -23,14 +41,14 @@ export const preferencesSlice = createSlice({
     reducers: {
         setTemperatureUnit(state, action: PayloadAction<string>) {
             state.temperatureUnit = action.payload;
-            setTemperatureUnitToStorage(state.temperatureUnit);
+            LocalStorageSetItem(temperatureUnitKey, state.temperatureUnit);
         },
         setFavoriteIcon(state, action: PayloadAction<string>) {
             state.favoriteIcon = action.payload;
-            setFavoriteIconToStorage(state.favoriteIcon);
+            LocalStorageSetItem(favoriteIconKey, state.favoriteIcon);
         }
     },
 });
 
 export default preferencesSlice.reducer;
-export const { setTemperatureUnit } = preferencesSlice.actions
+export const { setTemperatureUnit, setFavoriteIcon } = preferencesSlice.actions

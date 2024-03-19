@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Location } from "@/shared/types/Location";
 import { appConfig } from "@/config/appConfig";
+import { LocalStorageGetItem, LocalStorageSetItem } from "@/features/localStorage";
 
 interface LocationsState {
     selectedLocation: Location | null,
@@ -8,16 +9,13 @@ interface LocationsState {
     recentLocations: Location[]
 }
 
-const getFavorites = (): Location[] => JSON.parse(localStorage.getItem("locations.favorites") || '[]');
-const setFavorites = (value: Location[]) => localStorage.setItem("locations.favorites", JSON.stringify(value));
-
-const getRecentLocations = (): Location[] => JSON.parse(localStorage.getItem("locations.recent") || '[]');
-const setRecentLocations = (value: Location[]) => localStorage.setItem("locations.recent", JSON.stringify(value));
+const favoriteLocationKey = "locations.favorites";
+const recentLocationKey = "locations.recent";
 
 const initialState: LocationsState = {
     selectedLocation: null,
-    favoriteLocations: getFavorites(),
-    recentLocations: getRecentLocations()
+    favoriteLocations: LocalStorageGetItem(favoriteLocationKey, []),
+    recentLocations: LocalStorageGetItem(recentLocationKey, [])
 }
 
 export const locationsSlice = createSlice({
@@ -31,30 +29,29 @@ export const locationsSlice = createSlice({
         setFavoriteLocation(state, action: PayloadAction<Location>) {
             const resultCollection = [action.payload, ...state.favoriteLocations.filter(el => el.Key !== action.payload.Key)];
             state.favoriteLocations = resultCollection;
-            setFavorites(resultCollection);
+            LocalStorageSetItem(favoriteLocationKey, resultCollection);
         },
         deleteFavoriteLocation(state, action: PayloadAction<Location>) {
             const resultCollection = state.favoriteLocations.filter(el => el.Key !== action.payload.Key);
             state.favoriteLocations = resultCollection;
-            setFavorites(resultCollection);
+            LocalStorageSetItem(favoriteLocationKey, resultCollection);
 
             locationsSlice.caseReducers.setRecentLocation(state, action);
         },
         clearAllRecentLocations(state) {
             state.recentLocations = [];
-            setRecentLocations([]);
+            LocalStorageSetItem(recentLocationKey, null);
         },
-        //helpers
-        setRecentLocation(state, action: PayloadAction<Location| null>){
+        setRecentLocation(state, action: PayloadAction<Location | null>) {
             if (action.payload !== null) {
                 const otherRecentLocations = state.recentLocations.filter(el => el.Key !== action.payload!.Key);
                 const resultCollection = [action.payload, ...otherRecentLocations];
                 if (resultCollection.length > appConfig.maxSavedRecentLocations) {
                     resultCollection.slice(-1)
                 }
-    
+
                 state.recentLocations = resultCollection;
-                setRecentLocations(resultCollection);
+                LocalStorageSetItem(recentLocationKey, resultCollection);
             }
         }
     },

@@ -23,7 +23,6 @@ export const useInitialLoadOfLocationFromUrl = () => {
             }
         }
         searchAndSetupLocation()
-
     }, []);
 
     return { isFetching: result?.isFetching, error: result?.error, isNotFound: shouldRun && result?.data == null };

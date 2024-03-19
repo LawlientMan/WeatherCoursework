@@ -1,4 +1,4 @@
-import WeatherIcon from '@/components/Weather/common/WeatherIcon';
+import WeatherIcon from '@/components/Weather/components/WeatherIcon';
 import { useGetCurrentWeatherQuery } from '@/features/weather/weatherApi';
 import { IRootState } from '@/config/store';
 import { Alert, Card, Col, Row } from 'react-bootstrap';
@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import '@/components/Weather/Now/WeatherNow.css'
 import WeatherNowSkeleton from '@/components/Weather/Now/WeatherNowSkeleton';
 import { formatInTimeZone } from 'date-fns-tz';
-import Temperature from '@/components/Weather/common/Temperature';
+import Temperature from '@/components/Weather/components/Temperature';
 
 const WeatherNow = () => {
     const selectedLocation = useSelector((state: IRootState) => state.locations.selectedLocation);

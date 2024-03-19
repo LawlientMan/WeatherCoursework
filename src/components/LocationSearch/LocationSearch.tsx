@@ -9,16 +9,16 @@ import LocationSearchItemsList from '@/components/LocationSearch/SearchMenu/Sear
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { useListKeyboardNavigation } from '@/components/LocationSearch/hooks/useListKeyboardNavigation';
 import { IRootState } from '@/config/store';
-import { setCurrentLocation } from '@/features/locations/locationSlice';
-import { useSelector, useDispatch } from 'react-redux';
+ import { useSelector, useDispatch } from 'react-redux';
 import FavoriteLocationOptions from '@/components/LocationSearch/SavedSearchMenu/SavedLocationOptions';
 import ErrorSearchMenu from '@/components/LocationSearch/components/ErrorSearchMenu';
 
 
 interface LocationSearchProps {
+    onLocationSelected: (location: Location) => void;
 }
 
-const LocationSearch = ({ }: LocationSearchProps) => {
+const LocationSearch = ({ onLocationSelected }: LocationSearchProps) => {
     const dispatch = useDispatch();
 
     const [menuOpen, setMenuOpen] = useState(false);
@@ -69,7 +69,7 @@ const LocationSearch = ({ }: LocationSearchProps) => {
     const isSelectedOption = activeOption >= 0;
 
     const setSelectedLocation = (location: Location) => {
-        dispatch(setCurrentLocation(location));
+        onLocationSelected(location);
     }
 
     const handleSubmit = (e: React.FormEvent) => {

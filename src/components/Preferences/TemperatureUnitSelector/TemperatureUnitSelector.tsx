@@ -1,14 +1,15 @@
-import { preferencesSlice } from '@/features/preferences/preferencesSlice';
+import { preferencesSlice, setTemperatureUnit } from '@/features/preferences/preferencesSlice';
 import store, { IRootState } from '@/config/store';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import { appConfig } from '@/config/appConfig';
 
 const TemperatureUnitSelector = () => {
     const unit = useSelector((state: IRootState) => state.preferences.temperatureUnit);
+    const dispatch = useDispatch();
 
     const setUnit = (value: string) => {
-        store.dispatch(preferencesSlice.actions.setTemperatureUnit(value))
+        dispatch(setTemperatureUnit(value))
     }
 
     return (

@@ -1,6 +1,6 @@
 import Weather5DaysSkeleton from '@/components/Weather/5Days/Weather5DaysSkeleton';
-import Temperature from '@/components/Weather/common/Temperature';
-import WeatherIcon from '@/components/Weather/common/WeatherIcon';
+import Temperature from '@/components/Weather/components/Temperature';
+import WeatherIcon from '@/components/Weather/components/WeatherIcon';
 import { useGet5DaysWeatherQuery } from '@/features/weather/weatherApi';
 import { IRootState } from '@/config/store';
 import { formatInTimeZone } from 'date-fns-tz';

@@ -16,7 +16,7 @@ interface InputProps extends Omit<A, 'loading'> {
 const LocationSearchInput = (props: InputProps) => {
     const dispatch = useDispatch();
 
-    const { isLoading, isMenuOpen, style, className, onClick, type, placeholder, ...rest } = props;
+    const { isLoading, isMenuOpen, style, className, onClick, type, placeholder, id, ...rest } = props;
     const selectedLocation = useSelector((state: IRootState) => state.locations.selectedLocation);
     const isSelectedLocationFavorite = useIsFavoriteLocation(selectedLocation);
 
@@ -42,6 +42,7 @@ const LocationSearchInput = (props: InputProps) => {
             }
             <div onClick={onClick}>
                 <input
+                    id='search-input'
                     className={showFavoriteButton ? 'form-control search-input location-selected' : ' form-control search-input'}
                     placeholder = {inputPlaceHolder}
                     type="search"

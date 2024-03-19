@@ -1,6 +1,6 @@
 import WeatherHourlySkeleton from '@/components/Weather/Hourly/WeatherHourlySkeleton';
-import Temperature from '@/components/Weather/common/Temperature';
-import WeatherIcon from '@/components/Weather/common/WeatherIcon';
+import Temperature from '@/components/Weather/components/Temperature';
+import WeatherIcon from '@/components/Weather/components/WeatherIcon';
 import { useGetHourlyWeatherQuery } from '@/features/weather/weatherApi';
 import { IRootState } from '@/config/store';
 import { formatInTimeZone } from 'date-fns-tz';

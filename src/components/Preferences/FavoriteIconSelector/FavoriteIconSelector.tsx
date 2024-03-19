@@ -1,23 +1,25 @@
 import FavoriteStarImg from '@/components/common/FavoriteStarImg';
-import { preferencesSlice } from '@/features/preferences/preferencesSlice';
-import store, { IRootState } from '@/config/store';
-import { useSelector } from 'react-redux';
+import { setFavoriteIcon } from '@/features/preferences/preferencesSlice';
+import { IRootState } from '@/config/store';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from "@/components/Preferences/FavoriteIconSelector/FavoriteIconSelector.module.css";
 import { appConfig } from '@/config/appConfig';
 
 const FavoriteIconSelector = () => {
+    const dispatch = useDispatch();
     const iconPreference = useSelector((state: IRootState) => state.preferences.favoriteIcon);
+    const icons = appConfig.supportedFavoriteIcons;
 
     const setIcon = (value: string) => {
-        store.dispatch(preferencesSlice.actions.setFavoriteIcon(value))
+        dispatch(setFavoriteIcon(value))
     }
 
     return (
         <div className='mb-3'>
             <p>Favorite icon:</p>
-            {appConfig.supportedFavoriteIcons.map(i => (
+            {icons.map(i => (
                 <button className={styles.selectFavoriteButton} onClick={() => setIcon(i)}>
-                    <FavoriteStarImg key={i} isActive={iconPreference === i} icon={i} />
+                    <FavoriteStarImg key={i.length} isActive={iconPreference === i} icon={i} />
                 </button>
             ))}
         </div>
