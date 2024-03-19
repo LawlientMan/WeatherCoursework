@@ -1,7 +1,7 @@
-import { locationsApi, useGetLocationsQuery } from '@/features/locations/locationsApi'
+import { useGetLocationsQuery } from '@/features/locations/locationsApi'
 import { Location } from '@/shared/types/Location';
 import React, { MutableRefObject, useState } from 'react'
-import { Form, ListGroup } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 
 import "@/components/LocationSearch/LocationSearch.css";
 import LocationSearchInput from '@/components/LocationSearch/LocationSearchInput';
@@ -12,7 +12,6 @@ import store, { IRootState } from '@/config/store';
 import { locationsSlice, setCurrentLocation } from '@/features/locations/locationSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import FavoriteLocationOptions from '@/components/LocationSearch/SavedSearchMenu/SavedLocationOptions';
-import { useNavigate } from 'react-router-dom';
 import ErrorSearchMenu from '@/components/LocationSearch/components/ErrorSearchMenu';
 
 
@@ -25,19 +24,20 @@ const LocationSearch = ({ }: LocationSearchProps) => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [searchText, setSearchText] = useState('');
     const [lastRunSearchText, setLastRunSearchText] = useState('');
-    
-    const showLocationSearchOptions = searchText && searchText == lastRunSearchText;
+
+    const showLocationSearchOptions = menuOpen && searchText && searchText == lastRunSearchText;
+    const showSavedLocations = menuOpen && !searchText;
 
     const { data, error, isFetching } = useGetLocationsQuery(lastRunSearchText, { skip: !showLocationSearchOptions })
     const favoriteLocations = useSelector((state: IRootState) => state.locations.favoriteLocations);
     const recentLocations = useSelector((state: IRootState) => state.locations.recentLocations);
 
     const recentLocationsWithoutFavorites = recentLocations
-        .filter(el => !favoriteLocations.find(f => f.Key === el.Key ));
+        .filter(el => !favoriteLocations.find(f => f.Key === el.Key));
 
     // move logic from several use state to useReducer 
     // !!! do not use store as a global object, export actions or use dispatch
-    
+
     const resetState = () => {
         setMenuOpen(false);
         setSearchText('');
@@ -49,30 +49,57 @@ const LocationSearch = ({ }: LocationSearchProps) => {
         resetState();
     }
 
+    const dataOptionsLength = showSavedLocations
+        ? (favoriteLocations.length + recentLocationsWithoutFavorites.length)
+        : (showLocationSearchOptions && data ? data.length : null)
+
+    const getActiveLocationOption = () => {
+        if (activeOption < 0) return null;
+
+        if (showSavedLocations) {
+            return favoriteLocations.length > activeOption
+                ? favoriteLocations[activeOption]
+                : recentLocationsWithoutFavorites[activeOption - favoriteLocations.length];
+        } else if (showLocationSearchOptions && data) {
+            return data[activeOption];
+        }
+
+        return null;
+    }
+
     const searchElementRef = useOutsideClick(handleOutsideClick) as (MutableRefObject<HTMLFormElement | null>);
-    const [onKeyDown, activeOption, resetActiveOption] = useListKeyboardNavigation(menuOpen && showLocationSearchOptions && data ? data.length : null);
+    const [onKeyDown, activeOption, resetActiveOption] = useListKeyboardNavigation(dataOptionsLength);
+    const isSelectedOption = activeOption >= 0;
 
     const setSelectedLocation = (location: Location) => {
         dispatch(setCurrentLocation(location));
-        store.dispatch(locationsSlice.actions.setRecentLocation(location))
     }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        if (activeOption < 0 || !showLocationSearchOptions) {
+        console.log(activeOption);
+        console.log(isSelectedOption);
+        console.log(dataOptionsLength);
+        console.log(getActiveLocationOption());
+
+        if (!isSelectedOption) {
             setLastRunSearchText(searchText);
             resetActiveOption();
             console.log('run search');
         }
-        else if (data) {
-            resetState();
-            setSelectedLocation(data[activeOption]);
+        else {
+            const location = getActiveLocationOption();
+            if (location) {
+                resetState();
+                setSelectedLocation(location);
 
-            if (document.activeElement instanceof HTMLElement) {
-                document.activeElement.blur();
+                if (document.activeElement instanceof HTMLElement) {
+                    document.activeElement.blur();
+                }
+                console.log('form submitted');
+
             }
-            console.log('form submitted');
         }
     }
 
@@ -97,33 +124,26 @@ const LocationSearch = ({ }: LocationSearchProps) => {
                     onClick={() => setMenuOpen(true)}
                 />
 
-                {!isFetching && menuOpen &&
-                    <div className='menu'>
-                        {error
-                            ? <ErrorSearchMenu/>
-                            : <>
-                                {searchText
-                                    ? (
-                                        <>
-                                            {showLocationSearchOptions && data && <LocationSearchItemsList
-                                                locations={data}
-                                                activeOption={activeOption}
-                                                onLocationSelected={handleLocationSelect} />}
-                                        </>
-                                    )
-                                    : (
-                                        <FavoriteLocationOptions
-                                            activeOption={activeOption}
-                                            onLocationSelected={handleLocationSelect} 
-                                            favoriteLocations={favoriteLocations}
-                                            recentLocations={recentLocationsWithoutFavorites}
-                                            />
-                                    )
-                                }
-                            </>
-                        }
-                    </div>
+                {showSavedLocations &&
+                    <FavoriteLocationOptions
+                        activeOption={activeOption}
+                        onLocationSelected={handleLocationSelect}
+                        favoriteLocations={favoriteLocations}
+                        recentLocations={recentLocationsWithoutFavorites}
+                    />
                 }
+
+                {showLocationSearchOptions && !isFetching && (
+                    <>
+                        {error
+                            ? <ErrorSearchMenu />
+                            : <LocationSearchItemsList
+                                locations={data}
+                                activeOption={activeOption}
+                                onLocationSelected={handleLocationSelect} />
+                        }
+                    </>
+                )}
             </Form>
         </>
     )

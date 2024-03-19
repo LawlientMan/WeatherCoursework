@@ -3,14 +3,14 @@ import { Location } from '@/shared/types/Location';
 import LocationSearchItem from '@/components/LocationSearch/SearchMenu/SearchLocationOptionItem';
 
 interface InputProps {
-    locations: Location[] | null;
+    locations: Location[] | null | undefined;
     activeOption: number;
     onLocationSelected: (location: Location) => void;
 }
 
 const LocationSearchItemsList = ({ locations, activeOption, onLocationSelected }: InputProps) => {
     return (
-        <>
+        <div className='menu'>
             <ListGroup>
                 {locations && locations.length > 0
                     ? (
@@ -31,7 +31,7 @@ const LocationSearchItemsList = ({ locations, activeOption, onLocationSelected }
                     (<ListGroup.Item>Nothing where found.</ListGroup.Item>)
                 }
             </ListGroup>
-        </>
+        </div>
     )
 }
 
