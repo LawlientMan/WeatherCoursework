@@ -8,8 +8,8 @@ import LocationSearchInput from '@/components/LocationSearch/LocationSearchInput
 import LocationSearchItemsList from '@/components/LocationSearch/SearchMenu/SearchLocationOptions';
 import { useOutsideClick } from '@/hooks/useOutsideClick';
 import { useListKeyboardNavigation } from '@/components/LocationSearch/hooks/useListKeyboardNavigation';
-import store, { IRootState } from '@/config/store';
-import { locationsSlice, setCurrentLocation } from '@/features/locations/locationSlice';
+import { IRootState } from '@/config/store';
+import { setCurrentLocation } from '@/features/locations/locationSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import FavoriteLocationOptions from '@/components/LocationSearch/SavedSearchMenu/SavedLocationOptions';
 import ErrorSearchMenu from '@/components/LocationSearch/components/ErrorSearchMenu';
@@ -34,9 +34,6 @@ const LocationSearch = ({ }: LocationSearchProps) => {
 
     const recentLocationsWithoutFavorites = recentLocations
         .filter(el => !favoriteLocations.find(f => f.Key === el.Key));
-
-    // move logic from several use state to useReducer 
-    // !!! do not use store as a global object, export actions or use dispatch
 
     const resetState = () => {
         setMenuOpen(false);
@@ -78,15 +75,9 @@ const LocationSearch = ({ }: LocationSearchProps) => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        console.log(activeOption);
-        console.log(isSelectedOption);
-        console.log(dataOptionsLength);
-        console.log(getActiveLocationOption());
-
         if (!isSelectedOption) {
             setLastRunSearchText(searchText);
             resetActiveOption();
-            console.log('run search');
         }
         else {
             const location = getActiveLocationOption();
@@ -97,8 +88,6 @@ const LocationSearch = ({ }: LocationSearchProps) => {
                 if (document.activeElement instanceof HTMLElement) {
                     document.activeElement.blur();
                 }
-                console.log('form submitted');
-
             }
         }
     }

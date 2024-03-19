@@ -1,9 +1,10 @@
 import FavoriteStarImg from '@/components/common/FavoriteStarImg';
-import { locationsSlice } from '@/features/locations/locationSlice';
-import store, { IRootState } from '@/config/store';
+import { deleteFavoriteLocation, setFavoriteLocation } from '@/features/locations/locationSlice';
+import { IRootState } from '@/config/store';
 import React from 'react'
 import { Form, Spinner } from 'react-bootstrap'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useIsFavoriteLocation } from '@/hooks/useIsFavoriteLocation';
 
 type A = React.InputHTMLAttributes<HTMLInputElement>;
 
@@ -13,22 +14,22 @@ interface InputProps extends Omit<A, 'loading'> {
 }
 
 const LocationSearchInput = (props: InputProps) => {
+    const dispatch = useDispatch();
+
     const { isLoading, isMenuOpen, style, className, onClick, type, placeholder, ...rest } = props;
     const selectedLocation = useSelector((state: IRootState) => state.locations.selectedLocation);
-    const favoriteLocations = useSelector((state: IRootState) => state.locations.favoriteLocations);
+    const isSelectedLocationFavorite = useIsFavoriteLocation(selectedLocation);
 
     const showFavoriteButton = selectedLocation && !isMenuOpen;
-    const isSelectedLocationFavorite = selectedLocation && favoriteLocations.some(el => el.Key === selectedLocation.Key);
-    
     const inputPlaceHolder = showFavoriteButton ? `${selectedLocation.Country.EnglishName} ${selectedLocation.EnglishName}` : "Let's find a city";
 
     const handleFavoriteButtonClick = () => {
         if (!selectedLocation) return;
 
         if (!isSelectedLocationFavorite) {
-            store.dispatch(locationsSlice.actions.setFavoriteLocation(selectedLocation))
+            dispatch(setFavoriteLocation(selectedLocation));
         } else {
-            store.dispatch(locationsSlice.actions.deleteFavoriteLocation(selectedLocation))
+            dispatch(deleteFavoriteLocation(selectedLocation));
         }
     }
 

@@ -4,13 +4,11 @@ import WeatherNow from "@/components/Weather/Now/WeatherNow"
 import { IRootState } from "@/config/store"
 import { useEffect, useState } from "react"
 import { Col, Row, ToggleButton, ToggleButtonGroup } from "react-bootstrap"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector } from "react-redux"
 import Weather5Days from "@/components/Weather/5Days/Weather5Days"
 import WeatherHourly from "@/components/Weather/Hourly/WeatherHourly"
 import { useNavigate, useParams } from "react-router-dom"
-import { useGetLocationByKeyQuery } from "@/features/locations/locationsApi"
 import { useInitialLoadOfLocationFromUrl } from "@/hooks/useInitialLoadOfLocationFromUrl"
-import { setCurrentLocation } from "@/features/locations/locationSlice"
 
 enum ViewMode {
     Now = "now",

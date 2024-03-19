@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from 'react'
+import React from 'react'
 import { Col, ListGroup, Row } from 'react-bootstrap';
 import { Location } from '@/shared/types/Location';
-import store from '@/config/store';
-import { locationsSlice } from '@/features/locations/locationSlice';
+import { deleteFavoriteLocation, setFavoriteLocation } from '@/features/locations/locationSlice';
 import FavoriteStarImg from '@/components/common/FavoriteStarImg';
+import { useDispatch } from 'react-redux';
+import { useScrollToElementIfActive } from '@/components/LocationSearch/hooks/useScrollToElementIfActive';
 
 interface InputProps {
     location: Location;
@@ -13,14 +14,9 @@ interface InputProps {
 }
 
 const LocationSavedItem = ({ location, isActive, isInFavorite, onLocationSelected }: InputProps) => {
-    const ref = useRef<HTMLAnchorElement>(null);
-
-    useEffect(() => {
-        if (isActive) {
-            ref.current?.scrollIntoView({ block: "nearest" });
-        }
-    }, [isActive]);
-
+    const dispatch = useDispatch();
+    const ref = useScrollToElementIfActive(isActive);
+    
     const handleOnClick = (e: React.FormEvent) => {
         e.preventDefault();
         onLocationSelected(location);
@@ -30,9 +26,9 @@ const LocationSavedItem = ({ location, isActive, isInFavorite, onLocationSelecte
         event.preventDefault();
 
         if (!isInFavorite) {
-            store.dispatch(locationsSlice.actions.setFavoriteLocation(location))
+            dispatch(setFavoriteLocation(location));
         } else {
-            store.dispatch(locationsSlice.actions.deleteFavoriteLocation(location))
+            dispatch(deleteFavoriteLocation(location));
         }
     };
 
